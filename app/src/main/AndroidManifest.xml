@@ -40,7 +40,7 @@
             android:authorities="com.sam_chordas.android.stockhawk.data.QuoteProvider"
             android:name="com.sam_chordas.android.stockhawk.data.generated.QuoteProvider"
             android:exported="false"/>
-       <receiver
+        <receiver
            android:name=".widget.StocksWidgetProvider"
            android:label="@string/title_widget_stocks">
            <intent-filter>
@@ -48,9 +48,8 @@
            </intent-filter>
            <meta-data android:name="android.appwidget.provider"
                android:resource="@xml/widget_stocks"/>
-       </receiver>
-
-
+        </receiver>
+        <service android:name=".widget.StocksWidgetIntentService"/>
     </application>
 
 </manifest>
