@@ -7,15 +7,21 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by keng on 1/06/16.
  */
 public class StocksWidgetIntentService extends IntentService {
+    private static String LOG_TAG = StocksWidgetIntentService.class.getSimpleName();
 
     public StocksWidgetIntentService() { super(StocksWidgetIntentService.class.getName()); }
 
@@ -30,7 +36,10 @@ public class StocksWidgetIntentService extends IntentService {
             RemoteViews views = new RemoteViews(getPackageName(), layoutId);
 
             // Add the data to the RemoteViews
-            String description= "FB = -1000%";
+//            String description = "FB = -1000%";
+            DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+            String description = df.format(Calendar.getInstance().getTime());
+            Log.v(LOG_TAG, description);
             views.setTextViewText(R.id.widget_textview, description);
 
             // Create and Intent to Launch MyStocksActivity
