@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
 import android.util.Log;
+
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -17,6 +18,7 @@ import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -34,6 +36,7 @@ public class StockTaskService extends GcmTaskService{
   private StringBuilder mStoredSymbols = new StringBuilder();
   private boolean isUpdate;
   public static final String ACTION_DATA_UPDATED = "com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED";
+  public static final int INVALID_STOCK_SYMBOL = -1;
 
   public StockTaskService(){}
 
@@ -141,6 +144,7 @@ public class StockTaskService extends GcmTaskService{
 
         } else {
           Log.v(LOG_TAG, "INVALID SYMBOL");
+          result = INVALID_STOCK_SYMBOL;
         }
       } catch (IOException e){
         e.printStackTrace();

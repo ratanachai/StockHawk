@@ -4,10 +4,12 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.QuoteCursorAdapter;
 import com.sam_chordas.android.stockhawk.rest.RecyclerViewItemClickListener;
 import com.sam_chordas.android.stockhawk.rest.Utils;
+import com.sam_chordas.android.stockhawk.service.ResponseReceiver;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -57,6 +60,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mContext = this;
+
+    // Register receiver for local intent of INVALID_STOCK_SYMBOL
+    IntentFilter intentFilter = new IntentFilter(StockIntentService.BROADCAST_ACTION);
+    ResponseReceiver responseReceiver = new ResponseReceiver();
+    LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver, intentFilter);
+
     ConnectivityManager cm =
         (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
