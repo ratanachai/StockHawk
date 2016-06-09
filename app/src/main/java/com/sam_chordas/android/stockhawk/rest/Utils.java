@@ -2,12 +2,15 @@ package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
 import android.util.Log;
+
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by sam_chordas on 10/8/15.
@@ -17,6 +20,35 @@ public class Utils {
   private static String LOG_TAG = Utils.class.getSimpleName();
 
   public static boolean showPercent = true;
+
+  public static boolean isStockSymbolValid(String json) {
+    try{
+      JSONObject jsonObj = new JSONObject(json);
+      if (jsonObj != null && jsonObj.length() != 0){
+        jsonObj = jsonObj.getJSONObject("query");
+        int count = Integer.parseInt(jsonObj.getString("count"));
+        jsonObj = jsonObj.getJSONObject("results");
+
+        if (count == 1){
+          JSONObject quoteObj = jsonObj.getJSONObject("quote");
+          if (quoteObj.getString("Name").equals("null"))
+            return false;
+
+        } else if (count > 1){
+          JSONArray quoteArr = jsonObj.getJSONArray("quote");
+          if (quoteArr != null && quoteArr.length() != 0){
+            for (int i=0; i < quoteArr.length(); i++){
+              if (quoteArr.getJSONObject(i).getString("Name").equals("null"))
+                return false;
+            }
+          }
+        }
+      }
+    } catch (JSONException e){
+      Log.e(LOG_TAG, "String to JSON failed: " + e);
+    }
+    return true;
+  }
 
   public static ArrayList quoteJsonToContentVals(String JSON){
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
@@ -92,4 +124,5 @@ public class Utils {
     }
     return builder.build();
   }
+
 }

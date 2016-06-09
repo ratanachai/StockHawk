@@ -56,6 +56,8 @@ public class StockTaskService extends GcmTaskService{
       mContext = this;
     }
     StringBuilder urlStringBuilder = new StringBuilder();
+
+    // Start building up Query String to Yahoo Finance
     try{
       // Base URL for the Yahoo query
       urlStringBuilder.append("https://query.yahooapis.com/v1/public/yql?q=");
@@ -64,19 +66,22 @@ public class StockTaskService extends GcmTaskService{
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
+
     if (params.getTag().equals("init") || params.getTag().equals("periodic")){
       isUpdate = true;
       initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-          new String[] { "Distinct " + QuoteColumns.SYMBOL }, null,
-          null, null);
+          new String[] { "Distinct " + QuoteColumns.SYMBOL }, null, null, null);
+
+      // Build Query for these preset Stock Symbol, if DB is empty
       if (initQueryCursor.getCount() == 0 || initQueryCursor == null){
         // Init task. Populates DB with quotes for the symbols seen below
         try {
-          urlStringBuilder.append(
-              URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
+          urlStringBuilder.append(URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
         }
+
+      // Build Query for update of existing Symbols in the DB
       } else if (initQueryCursor != null){
         DatabaseUtils.dumpCursor(initQueryCursor);
         initQueryCursor.moveToFirst();
@@ -92,6 +97,8 @@ public class StockTaskService extends GcmTaskService{
           e.printStackTrace();
         }
       }
+
+      // Build Query for new stock user want to add
     } else if (params.getTag().equals("add")){
       isUpdate = false;
       // get symbol from params.getExtra and build query
@@ -113,20 +120,27 @@ public class StockTaskService extends GcmTaskService{
     if (urlStringBuilder != null){
       urlString = urlStringBuilder.toString();
       try{
+        // Fetch from Yahoo
         getResponse = fetchData(urlString);
         result = GcmNetworkManager.RESULT_SUCCESS;
-        try {
-          ContentValues contentValues = new ContentValues();
-          // update ISCURRENT to 0 (false) so new data is current
-          if (isUpdate){
-            contentValues.put(QuoteColumns.ISCURRENT, 0);
-            mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
-                null, null);
+
+        if (Utils.isStockSymbolValid(getResponse)){
+          try {
+            ContentValues contentValues = new ContentValues();
+            // update ISCURRENT to 0 (false) so new data is current
+            if (isUpdate){
+              contentValues.put(QuoteColumns.ISCURRENT, 0);
+              mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
+                      null, null);
+            }
+            mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+                    Utils.quoteJsonToContentVals(getResponse));
+          }catch (RemoteException | OperationApplicationException e){
+            Log.e(LOG_TAG, "Error applying batch insert", e);
           }
-          mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-              Utils.quoteJsonToContentVals(getResponse));
-        }catch (RemoteException | OperationApplicationException e){
-          Log.e(LOG_TAG, "Error applying batch insert", e);
+
+        } else {
+          Log.v(LOG_TAG, "INVALID SYMBOL");
         }
       } catch (IOException e){
         e.printStackTrace();
@@ -135,6 +149,7 @@ public class StockTaskService extends GcmTaskService{
     updateWidgets(); //Update on every data fetch
     return result;
   }
+
   private void updateWidgets() {
     Log.v("LOG_TAG", "== UpdateWidgets ==");
     Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED).setPackage(mContext.getPackageName());
