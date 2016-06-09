@@ -122,6 +122,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
                     return;
+
+                    // Ask user to input again, when input is an Empty String or String of spaces
+                  } else if (input.toString().matches("^(\\s+|)$")) {
+                    Toast.makeText(MyStocksActivity.this, "No stock added. Please enter a Stock Symbol again.",
+                            Toast.LENGTH_SHORT).show();
+
                   } else {
                     // Add the stock to DB
                     mServiceIntent.putExtra("tag", "add");
