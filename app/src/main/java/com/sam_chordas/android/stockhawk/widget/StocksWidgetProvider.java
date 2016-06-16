@@ -13,14 +13,14 @@ import com.sam_chordas.android.stockhawk.service.StockTaskService;
 /**
  * Created by keng on 30/05/16.
  */
-public class DetailWidgetProvider extends AppWidgetProvider {
-    private static final String LOG_TAG = DetailWidgetProvider.class.getSimpleName();
+public class StocksWidgetProvider extends AppWidgetProvider {
+    private static final String LOG_TAG = StocksWidgetProvider.class.getSimpleName();
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int wid : appWidgetIds) {
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_detail);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_stocks);
             // Set up the collection
-            views.setRemoteAdapter(R.id.widget_listview, new Intent(context, DetailWidgetService.class));
+            views.setRemoteAdapter(R.id.widget_listview, new Intent(context, StocksWidgetService.class));
             appWidgetManager.updateAppWidget(wid, views);
         }
     }

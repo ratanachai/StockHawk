@@ -16,8 +16,8 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
  * Created by keng on 16/06/16, refer to
  * https://github.com/udacity/Advanced_Android_Development/compare/7.03_Choose_Your_Size...7.04_Integrating_the_Detail_Widget
  */
-public class DetailWidgetService extends RemoteViewsService {
-    public final String LOG_TAG = DetailWidgetService.class.getSimpleName();
+public class StocksWidgetService extends RemoteViewsService {
+    public final String LOG_TAG = StocksWidgetService.class.getSimpleName();
     private static final String[] QUOTES_COLUMNS = {
         QuoteDatabase.QUOTES + "." + QuoteColumns._ID,
         QuoteColumns.SYMBOL,
@@ -75,14 +75,14 @@ public class DetailWidgetService extends RemoteViewsService {
             public RemoteViews getViewAt(int position) {
                 if (position == AdapterView.INVALID_POSITION || data == null || !data.moveToPosition(position))
                     return null;
-                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_list_item_quote);
+                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_stocks_listitem);
                 views.setTextViewText(R.id.stock_symbol, data.getString(INDEX_QUOTES_SYMBOL));
                 return views;
             }
 
             @Override
             public RemoteViews getLoadingView() {
-                return new RemoteViews(getPackageName(), R.layout.widget_list_item_quote);
+                return new RemoteViews(getPackageName(), R.layout.widget_stocks_listitem);
             }
 
             @Override

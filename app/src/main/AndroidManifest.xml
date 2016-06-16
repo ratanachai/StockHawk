@@ -41,7 +41,7 @@
             android:exported="false"/>
         <receiver
            android:name=".widget.OneStockWidgetProvider"
-           android:label="@string/title_widget_stocks">
+           android:label="@string/title_widget_one_stock">
            <intent-filter>
                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                <action android:name="com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED" />
@@ -51,16 +51,16 @@
         </receiver>
         <service android:name=".widget.OneStockWidgetIntentService"/>
         <receiver
-            android:name=".widget.DetailWidgetProvider"
+            android:name=".widget.StocksWidgetProvider"
             android:label="@string/title_widget_stocks">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/widget_detail"/>
+                android:resource="@xml/widget_stocks"/>
         </receiver>
-        <service android:name=".widget.DetailWidgetService"
+        <service android:name=".widget.StocksWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
