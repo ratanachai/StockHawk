@@ -20,19 +20,19 @@ import java.util.Calendar;
 /**
  * Created by keng on 1/06/16.
  */
-public class StocksWidgetIntentService extends IntentService {
-    private static String LOG_TAG = StocksWidgetIntentService.class.getSimpleName();
+public class OneStockWidgetIntentService extends IntentService {
+    private static String LOG_TAG = OneStockWidgetIntentService.class.getSimpleName();
 
-    public StocksWidgetIntentService() { super(StocksWidgetIntentService.class.getName()); }
+    public OneStockWidgetIntentService() { super(OneStockWidgetIntentService.class.getName()); }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         AppWidgetManager appWidgetManager= AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,
-                StocksWidgetProvider.class));
+                OneStockWidgetProvider.class));
 
         for(int wid : appWidgetIds) {
-            int layoutId = R.layout.widget_stocks;
+            int layoutId = R.layout.widget_one_stock;
             RemoteViews views = new RemoteViews(getPackageName(), layoutId);
 
             // Add the data to the RemoteViews
