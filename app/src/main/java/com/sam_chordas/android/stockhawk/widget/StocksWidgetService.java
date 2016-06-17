@@ -75,8 +75,17 @@ public class StocksWidgetService extends RemoteViewsService {
             public RemoteViews getViewAt(int position) {
                 if (position == AdapterView.INVALID_POSITION || data == null || !data.moveToPosition(position))
                     return null;
+                // Set data into each views
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_stocks_listitem);
                 views.setTextViewText(R.id.stock_symbol, data.getString(INDEX_QUOTES_SYMBOL));
+                views.setTextViewText(R.id.bid_price, data.getString(INDEX_QUOTES_BIDPRICE));
+                views.setTextViewText(R.id.change, data.getString(INDEX_QUOTES_PERCENT_CHANGE));
+                // Set Color for Pill background
+                if (data.getInt(INDEX_QUOTES_ISUP) == 1)
+                    views.setInt(R.id.change, "setBackgroundResource", R.drawable.percent_change_pill_green);
+                else
+                    views.setInt(R.id.change, "setBackgroundResource", R.drawable.percent_change_pill_red);
+
                 return views;
             }
 

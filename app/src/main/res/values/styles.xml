@@ -8,17 +8,31 @@
     <!-- Customize your theme here. -->
   </style>
 
+  <!-- Style for MyStocksActivity -->
+  <style name="StockSymbolTextStyle">
+    <item name="android:textSize">25sp</item>
+    <item name="android:textAllCaps">true</item>
+  </style>
+  <style name="BidPriceTextStyle">
+    <item name="android:textSize">20sp</item>
+  </style>
   <style name="PercentChangeTextStyle">
     <item name="android:textSize">20sp</item>
     <item name="android:textColor">#FFF</item>
     <item name="android:textStyle">bold</item>
   </style>
-  <style name="BidPriceTextStyle">
+  <!-- Style for StocksWidget -->
+  <style name="WidgetStockSymbolTextStyle">
     <item name="android:textSize">20sp</item>
-  </style>
-  <style name="StockSymbolTextStyle">
-    <item name="android:textSize">25sp</item>
     <item name="android:textAllCaps">true</item>
+  </style>
+  <style name="WidgetBidPriceTextStyle">
+    <item name="android:textSize">17sp</item>
+  </style>
+  <style name="WidgetPercentChangeTextStyle">
+    <item name="android:textSize">17sp</item>
+    <item name="android:textColor">#FFF</item>
+    <item name="android:textStyle">bold</item>
   </style>
 
 </resources>
