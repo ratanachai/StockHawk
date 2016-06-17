@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_stocks"
     android:padding="@dimen/widget_margin"
-    android:background="@color/material_blue_500"
     android:layout_width="match_parent" android:layout_height="match_parent">
     <ListView
         android:id="@+id/widget_listview"
