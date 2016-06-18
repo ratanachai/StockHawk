@@ -6,10 +6,15 @@
   <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
   <dimen name="navigation_drawer_width">240dp</dimen>
+
+  <!-- One Stock Widget -->
   <dimen name="widget_one_stock_default_height">40dp</dimen>
   <dimen name="widget_one_stock_default_width">180dp</dimen>
-  <dimen name="widget_stocks_default_height">120dp</dimen>
+  <!-- Stocks Widget -->
+  <dimen name="widget_stocks_default_height">110dp</dimen>
   <dimen name="widget_stocks_default_width">180dp</dimen>
+  <dimen name="widget_stocks_min_resize_height">40dp</dimen>
+  <dimen name="widget_stocks_min_resize_width">180dp</dimen>
   <dimen name="widget_padding">16dp</dimen>
   <dimen name="widget_change_padding">3dp</dimen>
   <dimen name="widget_header_height">34dp</dimen>
