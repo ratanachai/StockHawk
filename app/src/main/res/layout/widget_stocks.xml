@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/widget_header"
         android:background="@color/material_blue_500"
         android:layout_height="@dimen/widget_header_height"
         android:layout_width="match_parent">
