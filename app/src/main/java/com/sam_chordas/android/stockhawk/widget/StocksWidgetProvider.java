@@ -21,6 +21,7 @@ public class StocksWidgetProvider extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_stocks);
             // Set up the collection
             views.setRemoteAdapter(R.id.widget_listview, new Intent(context, StocksWidgetService.class));
+            views.setEmptyView(R.id.widget_listview, R.id.widget_empty);
             appWidgetManager.updateAppWidget(wid, views);
         }
     }

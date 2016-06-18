@@ -25,5 +25,15 @@
             android:id="@+id/widget_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/widget_empty"
+            android:gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:text="@string/no_quotes_available"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 </LinearLayout>
