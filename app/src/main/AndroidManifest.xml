@@ -47,7 +47,7 @@
                <action android:name="com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED" />
            </intent-filter>
            <meta-data android:name="android.appwidget.provider"
-               android:resource="@xml/widget_one_stock"/>
+               android:resource="@xml/widget_info_one_stock"/>
         </receiver>
         <service android:name=".widget.OneStockWidgetIntentService"/>
         <receiver
@@ -58,7 +58,7 @@
                 <action android:name="com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/widget_stocks"/>
+                android:resource="@xml/widget_info_stocks"/>
         </receiver>
         <service android:name=".widget.StocksWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
