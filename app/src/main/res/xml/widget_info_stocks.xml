@@ -6,4 +6,5 @@
     android:minResizeHeight="@dimen/widget_stocks_min_resize_height"
     android:minResizeWidth="@dimen/widget_stocks_min_resize_width"
     android:resizeMode="horizontal|vertical"
+    android:previewImage="@drawable/widget_stocks_preview"
     android:updatePeriodMillis="0" />
