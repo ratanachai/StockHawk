@@ -14,8 +14,8 @@
   <dimen name="widget_stocks_default_height">110dp</dimen>
   <dimen name="widget_stocks_default_width">180dp</dimen>
   <dimen name="widget_stocks_min_resize_height">40dp</dimen>
-  <dimen name="widget_stocks_min_resize_width">180dp</dimen>
-  <dimen name="widget_padding">16dp</dimen>
+  <dimen name="widget_stocks_min_resize_width">110dp</dimen>
+  <dimen name="widget_padding">8dp</dimen>
   <dimen name="widget_change_padding">3dp</dimen>
   <dimen name="widget_header_height">34dp</dimen>
 </resources>
