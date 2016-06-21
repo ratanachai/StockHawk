@@ -11,4 +11,6 @@
   <string name="title_widget_one_stock">One Stock</string>
   <string name="no_quotes_available">No Stock information available</string>
   <string name="widget_header_action_desc">Click to enter StockHawk App</string>
+  <string name="no_stock_added">No stock added. Please enter a Stock Symbol again.</string>
+  <string name="stock_already_saved">This stock is already saved!</string>
 </resources>
