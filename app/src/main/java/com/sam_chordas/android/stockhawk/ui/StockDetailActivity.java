@@ -23,7 +23,10 @@ public class StockDetailActivity extends Activity {
         ResponseReceiver responseReceiver = new ResponseReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver, intentFilter);
 
+        // Call intentService to gcmTaskService
         Intent intent = new Intent(this, StockIntentService.class);
+        intent.putExtra("tag", "historical");
+        intent.putExtra("symbol", getIntent().getStringExtra("symbol"));
         intent.setAction(GET_STOCK_DETAIL_ACTION);
         startService(intent);
     }

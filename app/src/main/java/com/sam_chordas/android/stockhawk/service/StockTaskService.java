@@ -43,6 +43,7 @@ public class StockTaskService extends GcmTaskService{
   public StockTaskService(Context context){
     mContext = context;
   }
+
   String fetchData(String url) throws IOException{
     Request request = new Request.Builder()
         .url(url)
@@ -55,20 +56,23 @@ public class StockTaskService extends GcmTaskService{
   @Override
   public int onRunTask(TaskParams params){
     Cursor initQueryCursor;
-    if (mContext == null){
-      mContext = this;
-    }
+    if (mContext == null) { mContext = this; }
     StringBuilder urlStringBuilder = new StringBuilder();
 
     // Start building up Query String to Yahoo Finance
+    // Case 1: select * from yahoo.finance.quotes where symbol in ("YHOO","AAPL","GOOG","MSFT")
+    // Case 2: select * from yahoo.finance.historicaldata where startDate = "2009-09-11"
+    // and endDate = "2010-03-10" and symbol = "YHOO"
+    String query = params.getTag().equals("historical") ?
+            "select * from yahoo.finance.historicaldata where startDate = \"2009-09-11\" and " +
+                    "endDate = \"2010-03-10\" and symbol = " :
+            "select * from yahoo.finance.quotes where symbol in (";
+
     try{
       // Base URL for the Yahoo query
       urlStringBuilder.append("https://query.yahooapis.com/v1/public/yql?q=");
-      urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol "
-        + "in (", "UTF-8"));
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-    }
+      urlStringBuilder.append(URLEncoder.encode(query, "UTF-8"));
+    } catch (UnsupportedEncodingException e) {e.printStackTrace();}
 
     if (params.getTag().equals("init") || params.getTag().equals("periodic")){
       isUpdate = true;
@@ -80,9 +84,7 @@ public class StockTaskService extends GcmTaskService{
         // Init task. Populates DB with quotes for the symbols seen below
         try {
           urlStringBuilder.append(URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-          e.printStackTrace();
-        }
+        } catch (UnsupportedEncodingException e) {e.printStackTrace();}
 
       // Build Query for update of existing Symbols in the DB
       } else if (initQueryCursor != null){
@@ -96,9 +98,7 @@ public class StockTaskService extends GcmTaskService{
         mStoredSymbols.replace(mStoredSymbols.length() - 1, mStoredSymbols.length(), ")");
         try {
           urlStringBuilder.append(URLEncoder.encode(mStoredSymbols.toString(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-          e.printStackTrace();
-        }
+        } catch (UnsupportedEncodingException e) {e.printStackTrace();}
       }
 
       // Build Query for new stock user want to add
@@ -108,9 +108,16 @@ public class StockTaskService extends GcmTaskService{
       String stockInput = params.getExtras().getString("symbol");
       try {
         urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\")", "UTF-8"));
-      } catch (UnsupportedEncodingException e){
-        e.printStackTrace();
-      }
+      } catch (UnsupportedEncodingException e) {e.printStackTrace();}
+
+      // Build Query for historical data for Stock Detail screen
+    } else if (params.getTag().equals("historical")) {
+      isUpdate = false;
+      String stockInput = params.getExtras().getString("symbol");
+      try {
+        urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\"", "UTF-8"));
+      } catch (UnsupportedEncodingException e) {e.printStackTrace();}
+
     }
     // finalize the URL for the API query.
     urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
@@ -120,14 +127,20 @@ public class StockTaskService extends GcmTaskService{
     String getResponse;
     int result = GcmNetworkManager.RESULT_FAILURE;
 
+    // Now Get the JSON from Yahoo using okhttp
     if (urlStringBuilder != null){
       urlString = urlStringBuilder.toString();
+      Log.v(LOG_TAG, urlString);
+
+      // Fetch Data from Yahoo
       try{
-        // Fetch from Yahoo
         getResponse = fetchData(urlString);
         result = GcmNetworkManager.RESULT_SUCCESS;
 
-        if (Utils.isStockSymbolValid(getResponse)){
+        if (urlString.matches(".*historical.*")) {
+          Log.v(LOG_TAG, "RESPONSE: "+getResponse);
+          
+        } else if (Utils.isStockSymbolValid(getResponse)){
           try {
             ContentValues contentValues = new ContentValues();
             // update ISCURRENT to 0 (false) so new data is current
@@ -138,7 +151,7 @@ public class StockTaskService extends GcmTaskService{
             }
             mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                     Utils.quoteJsonToContentVals(getResponse));
-          }catch (RemoteException | OperationApplicationException e){
+          } catch (RemoteException | OperationApplicationException e){
             Log.e(LOG_TAG, "Error applying batch insert", e);
           }
 
@@ -146,9 +159,8 @@ public class StockTaskService extends GcmTaskService{
           Log.v(LOG_TAG, "INVALID SYMBOL");
           result = INVALID_STOCK_SYMBOL;
         }
-      } catch (IOException e){
-        e.printStackTrace();
-      }
+
+      } catch (IOException e){ e.printStackTrace(); }
     }
     updateWidgets(); //Update on every data fetch
     return result;

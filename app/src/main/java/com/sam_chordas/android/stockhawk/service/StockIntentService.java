@@ -28,17 +28,17 @@ public class StockIntentService extends IntentService {
   @Override protected void onHandleIntent(Intent intent) {
     Log.d(StockIntentService.class.getSimpleName(), "Stock Intent Service");
 
+    // Prepare to call gcmTaskService (Put Symbol into bundle)
+    StockTaskService stockTaskService = new StockTaskService(this);
+    Bundle args = new Bundle();
+    if (intent.getStringExtra("tag").matches("(add|historical)")) {
+      args.putString("symbol", intent.getStringExtra("symbol"));
+    }
+    // Call OnRunTask from the intent service to force it to run immediately instead of scheduling a task.
+    int result = stockTaskService.onRunTask(new TaskParams(intent.getStringExtra("tag"), args));
+
     // Case of request multiple stock.
     if(intent.getAction().equals(MyStocksActivity.GET_STOCKS_INFO_ACTION)) {
-      StockTaskService stockTaskService = new StockTaskService(this);
-
-      // Put Symbol into bundle
-      Bundle args = new Bundle();
-      if (intent.getStringExtra("tag").equals("add"))
-        args.putString("symbol", intent.getStringExtra("symbol"));
-
-      // Call OnRunTask from the intent service to force it to run immediately instead of scheduling a task.
-      int result = stockTaskService.onRunTask(new TaskParams(intent.getStringExtra("tag"), args));
 
       // Sendout Local Broadcast to display Toast at ResponseReceiver.java
       if (result == StockTaskService.INVALID_STOCK_SYMBOL) {
@@ -46,8 +46,9 @@ public class StockIntentService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
       }
 
-    // Case of request Stock Detail (history of price)
+    // Case of request Stock Detail (historical data of price)
     } else if(intent.getAction().equals(StockDetailActivity.GET_STOCK_DETAIL_ACTION)) {
+
       Intent localIntent = new Intent(BROADCAST_ACTION).putExtra(TEST, true);
       LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
     }

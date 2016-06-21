@@ -95,11 +95,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               @Override
               public void onItemClick(View v, int position) {
                 Intent intent = new Intent(v.getContext(), StockDetailActivity.class);
+                intent.putExtra("symbol", "YHOO");
                 startActivity(intent);
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
-
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.attachToRecyclerView(recyclerView);
@@ -153,14 +153,15 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mItemTouchHelper.attachToRecyclerView(recyclerView);
 
     mTitle = getTitle();
+
+    // Create a periodic task to pull stocks once every hour after the app has been opened.
+    // This is so Widget data stays up to date.
     if (isConnected){
       //long period = 3600L;
       long period = 60L;
       long flex = 10L;
       String periodicTag = "periodic";
 
-      // create a periodic task to pull stocks once every hour after the app has been opened. This
-      // is so Widget data stays up to date.
       PeriodicTask periodicTask = new PeriodicTask.Builder()
           .setService(StockTaskService.class)
           .setPeriod(period)
@@ -174,7 +175,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       GcmNetworkManager.getInstance(this).schedule(periodicTask);
     }
   }
-
 
   @Override
   public void onResume() {
