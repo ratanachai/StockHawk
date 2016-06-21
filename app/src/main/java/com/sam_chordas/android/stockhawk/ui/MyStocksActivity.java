@@ -40,6 +40,8 @@ import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallb
 
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
+  public static final String GET_STOCKS_INFO_ACTION = "com.sam_chordas.android.stockhawk.ui.GET_STOCKS_INFO";
+
   /**
    * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
    */
@@ -72,9 +74,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
     isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-    // The intent service is for executing immediate pulls from the Yahoo API
+    // The intent service is for executing immediate pulls from the Yahoo API, because
     // GCMTaskService can only schedule tasks, they cannot execute immediately
     mServiceIntent = new Intent(this, StockIntentService.class);
+    mServiceIntent.setAction(GET_STOCKS_INFO_ACTION);
     if (savedInstanceState == null) {
       // Run the initialize task service so that some stocks appear upon an empty database
       mServiceIntent.putExtra("tag", "init");
@@ -125,7 +128,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
                   } else if (input.toString().matches("^(\\s+|)$")) {
                     // Input Empty or String of white spaces, so toast and do nothing
-                    Toast.makeText(MyStocksActivity.this, getString(R.string.no_stock_added),
+                    Toast.makeText(MyStocksActivity.this, getString(R.string.no_stock_added_try_again),
                             Toast.LENGTH_SHORT).show();
                     return;
 
