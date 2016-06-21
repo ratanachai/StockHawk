@@ -20,6 +20,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -94,11 +95,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override
               public void onItemClick(View v, int position) {
+                TextView tv = (TextView)v.findViewById(R.id.stock_symbol);
                 Intent intent = new Intent(v.getContext(), StockDetailActivity.class);
-                intent.putExtra("symbol", "YHOO");
+                intent.putExtra("symbol", tv.getText());
                 startActivity(intent);
               }
-            }));
+            })
+    );
     recyclerView.setAdapter(mCursorAdapter);
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
