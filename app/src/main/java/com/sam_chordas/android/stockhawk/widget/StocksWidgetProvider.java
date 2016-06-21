@@ -1,11 +1,13 @@
 package com.sam_chordas.android.stockhawk.widget;
 
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
@@ -36,9 +38,18 @@ public class StocksWidgetProvider extends AppWidgetProvider {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             views.setOnClickPendingIntent(R.id.widget_header, pendingIntent);
 
+            // a11y: Set ContentDescription
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+                setRemoteContentDescription(context, views);
+
             // Set the RemoteView for the Widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
+    }
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+    private void setRemoteContentDescription(Context context, RemoteViews views) {
+        // The only item that need contentDescription right now
+        views.setContentDescription(R.id.widget_header, context.getString(R.string.widget_header_action_desc));
     }
 
     @Override

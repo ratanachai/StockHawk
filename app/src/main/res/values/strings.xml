@@ -10,4 +10,5 @@
   <string name="title_widget_stocks">All Stocks</string>
   <string name="title_widget_one_stock">One Stock</string>
   <string name="no_quotes_available">No Stock information available</string>
+  <string name="widget_header_action_desc">Click to enter StockHawk App</string>
 </resources>
