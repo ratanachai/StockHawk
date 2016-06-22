@@ -22,6 +22,9 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by sam_chordas on 9/30/15.
@@ -64,8 +67,8 @@ public class StockTaskService extends GcmTaskService{
     // Case 2: select * from yahoo.finance.historicaldata where startDate = "2009-09-11"
     // and endDate = "2010-03-10" and symbol = "YHOO"
     String query = params.getTag().equals("historical") ?
-            "select * from yahoo.finance.historicaldata where startDate = \"2009-09-11\" and " +
-                    "endDate = \"2010-03-10\" and symbol = " :
+            "select * from yahoo.finance.historicaldata where startDate = \"?\" and " +
+                    "endDate = \"?\" and symbol = " :
             "select * from yahoo.finance.quotes where symbol in (";
 
     try{
@@ -101,7 +104,7 @@ public class StockTaskService extends GcmTaskService{
         } catch (UnsupportedEncodingException e) {e.printStackTrace();}
       }
 
-      // Build Query for new stock user want to add
+    // Build Query for new stock user want to add
     } else if (params.getTag().equals("add")){
       isUpdate = false;
       // get symbol from params.getExtra and build query
@@ -110,10 +113,21 @@ public class StockTaskService extends GcmTaskService{
         urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\")", "UTF-8"));
       } catch (UnsupportedEncodingException e) {e.printStackTrace();}
 
-      // Build Query for historical data for Stock Detail screen
+    // Build Query for historical data for Stock Detail screen
     } else if (params.getTag().equals("historical")) {
       isUpdate = false;
       String stockInput = params.getExtras().getString("symbol");
+
+      // Set Start and End date as Today and a year before
+      DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DATE, -1); // Yesterday
+      String endDate = dateFormat.format(cal.getTime());
+      cal.add(Calendar.YEAR, -1); // A year before yesterday
+      String startDate = dateFormat.format(cal.getTime());
+      urlStringBuilder.replace(110, 113, startDate);
+      urlStringBuilder.replace(143, 146, endDate);
+
       try {
         urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\"", "UTF-8"));
       } catch (UnsupportedEncodingException e) {e.printStackTrace();}
@@ -139,18 +153,19 @@ public class StockTaskService extends GcmTaskService{
 
         if (urlString.matches(".*historical.*")) {
           Log.v(LOG_TAG, "RESPONSE: "+getResponse);
-          
+          // TODO 2: Process Json in Util
+
         } else if (Utils.isStockSymbolValid(getResponse)){
           try {
             ContentValues contentValues = new ContentValues();
             // update ISCURRENT to 0 (false) so new data is current
             if (isUpdate){
               contentValues.put(QuoteColumns.ISCURRENT, 0);
-              mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
-                      null, null);
+              mContext.getContentResolver().update(
+                      QuoteProvider.Quotes.CONTENT_URI, contentValues, null, null);
             }
-            mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-                    Utils.quoteJsonToContentVals(getResponse));
+            mContext.getContentResolver().applyBatch(
+                    QuoteProvider.AUTHORITY, Utils.quoteJsonToContentVals(getResponse));
           } catch (RemoteException | OperationApplicationException e){
             Log.e(LOG_TAG, "Error applying batch insert", e);
           }
