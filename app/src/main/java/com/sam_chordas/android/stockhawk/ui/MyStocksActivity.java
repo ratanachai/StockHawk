@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
+ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -34,14 +35,11 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.QuoteCursorAdapter;
 import com.sam_chordas.android.stockhawk.rest.RecyclerViewItemClickListener;
 import com.sam_chordas.android.stockhawk.rest.Utils;
-import com.sam_chordas.android.stockhawk.service.ResponseReceiver;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
-  public static final String GET_STOCKS_INFO_ACTION = "com.sam_chordas.android.stockhawk.ui.GET_STOCKS_INFO";
 
   /**
    * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -66,9 +64,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mContext = this;
 
     // Register receiver for local intent of INVALID_STOCK_SYMBOL
-    IntentFilter intentFilter = new IntentFilter(StockIntentService.BROADCAST_ACTION);
-    ResponseReceiver responseReceiver = new ResponseReceiver();
-    LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver, intentFilter);
+    IntentFilter intentFilter = new IntentFilter(StockTaskService.ACTION_INVALID_SYMBOL);
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+      @Override public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context, R.string.invalid_stock_no_added, Toast.LENGTH_SHORT).show();
+      }
+    };
+    LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
 
     // Get Network Info
     ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -78,7 +80,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     // The intent service is for executing immediate pulls from the Yahoo API, because
     // GCMTaskService can only schedule tasks, they cannot execute immediately
     mServiceIntent = new Intent(this, StockIntentService.class);
-    mServiceIntent.setAction(GET_STOCKS_INFO_ACTION);
     if (savedInstanceState == null) {
       // Run the initialize task service so that some stocks appear upon an empty database
       mServiceIntent.putExtra("tag", "init");

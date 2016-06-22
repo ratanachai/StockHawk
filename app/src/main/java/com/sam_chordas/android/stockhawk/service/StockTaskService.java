@@ -43,7 +43,8 @@ public class StockTaskService extends GcmTaskService{
           "com.sam_chordas.android.stockhawk.service.ACTION_DATA_UPDATED";
   public static final String ACTION_SHOW_HISTORICAL =
           "com.sam_chordas.android.stockhawk.service.ACTION_SHOW_HISTORICAL";
-  public static final int INVALID_STOCK_SYMBOL = -1;
+  public static final String ACTION_INVALID_SYMBOL =
+          "com.sam_chordas.android.stockhawk.service.ACTION_INVALID_SYMBOL";
 
   public StockTaskService(){}
 
@@ -179,8 +180,9 @@ public class StockTaskService extends GcmTaskService{
           }
 
         } else {
-          Log.v(LOG_TAG, "INVALID SYMBOL");
-          result = INVALID_STOCK_SYMBOL;
+          // Stock Symbol Invalid: Sendout Local Broadcast to MyStocksActivity
+          Intent localIntent = new Intent(ACTION_INVALID_SYMBOL);
+          LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
         }
 
       } catch (IOException e){ e.printStackTrace(); }
