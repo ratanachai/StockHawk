@@ -15,8 +15,8 @@
         android:text="Hello World"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-    <com.db.chart.view.BarChartView
-        android:id="@+id/bar_chart"
+    <com.db.chart.view.LineChartView
+        android:id="@+id/line_chart"
         android:layout_below="@+id/textView"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

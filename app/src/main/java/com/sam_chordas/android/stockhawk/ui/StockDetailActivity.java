@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import com.db.chart.model.BarSet;
-import com.db.chart.view.BarChartView;
+import com.db.chart.model.LineSet;
+import com.db.chart.view.LineChartView;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
 
@@ -35,12 +35,12 @@ public class StockDetailActivity extends Activity {
         startService(intent);
 
         // Draw a chart
-        BarChartView barChart = (BarChartView) findViewById(R.id.bar_chart);
-        BarSet dataset = new BarSet(mLabels, mValues);
+        LineChartView lineChart = (LineChartView) findViewById(R.id.line_chart);
+        LineSet dataset = new LineSet(mLabels, mValues);
         dataset.setColor(Color.GREEN);
-        barChart.setAxisColor(Color.GRAY);
-        barChart.setLabelsColor(Color.GRAY);
-        barChart.addData(dataset);
-        barChart.show();
+        lineChart.setAxisColor(Color.GRAY);
+        lineChart.setLabelsColor(Color.GRAY);
+        lineChart.addData(dataset);
+        lineChart.show();
     }
 }
