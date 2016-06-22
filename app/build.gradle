@@ -25,7 +25,6 @@ repositories {
 }
 
 dependencies {
-
   compile 'com.google.android.gms:play-services-gcm:8.4.0'
   compile 'com.squareup.okhttp:okhttp:2.5.0'
   apt 'net.simonvt.schematic:schematic-compiler:0.6.3'
@@ -35,4 +34,5 @@ dependencies {
   compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
     transitive = true
   }
+  compile 'com.diogobernardino:williamchart:2.2'
 }
