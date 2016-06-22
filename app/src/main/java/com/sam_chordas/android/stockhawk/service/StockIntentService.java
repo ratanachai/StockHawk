@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
 import com.google.android.gms.gcm.TaskParams;
 import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
-import com.sam_chordas.android.stockhawk.ui.StockDetailActivity;
 
 /**
  * Created by sam_chordas on 10/1/15.
@@ -15,7 +15,6 @@ import com.sam_chordas.android.stockhawk.ui.StockDetailActivity;
 public class StockIntentService extends IntentService {
   public static final String BROADCAST_ACTION = "com.sam_chordas.android.stockhawk.service.BROADCAST";
   public static final String INVALID_STOCK_SYMBOL = "com.sam_chordas.android.stockhawk.service.INVALID_STOCK_SYMBOL";
-  public static final String TEST = "com.sam_chordas.android.stockhawk.service.TEST";
 
   public StockIntentService(){
     super(StockIntentService.class.getName());
@@ -45,12 +44,6 @@ public class StockIntentService extends IntentService {
         Intent localIntent = new Intent(BROADCAST_ACTION).putExtra(INVALID_STOCK_SYMBOL, true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
       }
-
-    // Case of request Stock Detail (historical data of price)
-    } else if(intent.getAction().equals(StockDetailActivity.GET_STOCK_DETAIL_ACTION)) {
-
-      Intent localIntent = new Intent(BROADCAST_ACTION).putExtra(TEST, true);
-      LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
     }
   }
 

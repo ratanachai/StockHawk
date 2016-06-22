@@ -20,8 +20,6 @@ public class ResponseReceiver extends BroadcastReceiver {
         // Receive local broadcast from IntentService, to display toast
         if(intent.getExtras().getBoolean(StockIntentService.INVALID_STOCK_SYMBOL)){
             Toast.makeText(context, R.string.invalid_stock_no_added, Toast.LENGTH_SHORT).show();
-        } else if(intent.getExtras().getBoolean(StockIntentService.TEST)){
-            Toast.makeText(context, "TEST", Toast.LENGTH_SHORT).show();
         }
 
     }
