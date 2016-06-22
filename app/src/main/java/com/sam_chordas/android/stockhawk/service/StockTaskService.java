@@ -7,6 +7,7 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -38,7 +39,10 @@ public class StockTaskService extends GcmTaskService{
   private Context mContext;
   private StringBuilder mStoredSymbols = new StringBuilder();
   private boolean isUpdate;
-  public static final String ACTION_DATA_UPDATED = "com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED";
+  public static final String ACTION_DATA_UPDATED =
+          "com.sam_chordas.android.stockhawk.service.ACTION_DATA_UPDATED";
+  public static final String ACTION_SHOW_HISTORICAL =
+          "com.sam_chordas.android.stockhawk.service.ACTION_SHOW_HISTORICAL";
   public static final int INVALID_STOCK_SYMBOL = -1;
 
   public StockTaskService(){}
@@ -154,6 +158,10 @@ public class StockTaskService extends GcmTaskService{
         if (urlString.matches(".*historical.*")) {
           Log.v(LOG_TAG, "RESPONSE: "+getResponse);
           // TODO 2: Process Json in Util
+          // Send out the response to StockDetail Activity
+          Intent localIntent = new Intent(ACTION_SHOW_HISTORICAL);
+          localIntent.putExtra("json_response", getResponse);
+          LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
 
         } else if (Utils.isStockSymbolValid(getResponse)){
           try {

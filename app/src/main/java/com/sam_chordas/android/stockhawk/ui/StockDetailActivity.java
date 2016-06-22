@@ -1,14 +1,21 @@
 package com.sam_chordas.android.stockhawk.ui;
 
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.widget.TextView;
 
 import com.db.chart.model.LineSet;
 import com.db.chart.view.LineChartView;
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.service.ResponseReceiver;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
+import com.sam_chordas.android.stockhawk.service.StockTaskService;
 
 public class StockDetailActivity extends Activity {
     public static final String GET_STOCK_DETAIL_ACTION = "com.sam_chordas.android.stockhawk.ui.GET_STOCK_DETAIL";
@@ -26,6 +33,17 @@ public class StockDetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_detail);
+
+        // Register receiver for local intent of response, to get Response from GcmService
+        IntentFilter intentFilter = new IntentFilter(StockTaskService.ACTION_SHOW_HISTORICAL);
+        ResponseReceiver responseReceiver = new ResponseReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                TextView tv = (TextView)findViewById(R.id.response);
+                tv.setText(intent.getStringExtra("json_response"));
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver, intentFilter);
 
         // Call intentService to gcmTaskService
         Intent intent = new Intent(this, StockIntentService.class);
