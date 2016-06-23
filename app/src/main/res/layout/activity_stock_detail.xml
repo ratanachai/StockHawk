@@ -8,11 +8,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.sam_chordas.android.stockhawk.ui.StockDetailActivity">
-
+        <TextView
+            style="@style/StockDetailHeader"
+            android:text="Today"
+            tools:text="Today @12:30"
+            android:fontFamily="sans-serif"
+             />
         <include layout="@layout/list_item_quote"/>
-
+        <TextView
+            style="@style/StockDetailHeader"
+            android:text="Past 3 Months"
+            tools:text="Past 3 Months"
+            android:background="@color/material_blue_400"
+            android:fontFamily="sans-serif"
+            />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,15 +36,15 @@
                 android:paddingTop="@dimen/chart_axis_side_margin"
                 android:paddingBottom="@dimen/chart_axis_side_margin"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="180dp" />
             <TextView
                 android:text="@string/chart_label"
+                tools:text="Adj close price from 03-23 to 06-24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="40dp"
                 />
-
         </FrameLayout>
 
     </LinearLayout>

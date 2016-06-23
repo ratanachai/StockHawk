@@ -14,5 +14,5 @@
   <string name="no_stock_added_try_again">No stock added. Please enter a Stock Symbol again.</string>
   <string name="stock_already_saved">This stock is already saved!</string>
   <string name="invalid_stock_no_added">Invalid stock symbol. No stock added.</string>
-  <string name="chart_label">Past 3 months data</string>
+  <string name="chart_label">Adj Close price</string>
 </resources>
