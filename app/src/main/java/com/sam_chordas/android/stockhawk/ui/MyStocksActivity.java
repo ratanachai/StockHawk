@@ -91,6 +91,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 TextView tv = (TextView)v.findViewById(R.id.stock_symbol);
                 Intent intent = new Intent(v.getContext(), StockDetailActivity.class);
                 intent.putExtra("symbol", tv.getText());
+                intent.putExtra("bid_price", ((TextView)v.findViewById(R.id.bid_price)).getText());
+                intent.putExtra("change", ((TextView)v.findViewById(R.id.change)).getText());
                 startActivity(intent);
               }
             })

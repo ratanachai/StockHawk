@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.db.chart.model.LineSet;
 import com.db.chart.view.LineChartView;
@@ -35,11 +36,24 @@ public class StockDetailActivity extends Activity {
         setContentView(R.layout.activity_stock_detail);
 
         // Call intentService to gcmTaskService
+        Intent in = getIntent(); // Intent from MyStocksActivity class
         Intent intent = new Intent(this, StockIntentService.class);
         intent.putExtra("tag", "historical");
-        intent.putExtra("symbol", getIntent().getStringExtra("symbol"));
+        intent.putExtra("symbol", in.getStringExtra("symbol"));
         intent.setAction(GET_STOCK_DETAIL_ACTION);
         startService(intent);
+
+        // Set TextViews in layout
+        ((TextView)findViewById(R.id.stock_symbol)).setText(in.getStringExtra("symbol"));
+        TextView bidPriceTv = (TextView)findViewById(R.id.bid_price);
+        TextView change = (TextView)findViewById(R.id.change);
+        bidPriceTv.setText(in.getStringExtra("bid_price"));
+        change.setText(in.getStringExtra("change"));
+        if (Float.parseFloat(in.getStringExtra("change").replace("%","")) < 0)
+            change.setBackgroundDrawable(getResources().getDrawable(R.drawable.percent_change_pill_red));
+        else
+            change.setBackgroundDrawable(getResources().getDrawable(R.drawable.percent_change_pill_green));
+
     }
 
     @Override
