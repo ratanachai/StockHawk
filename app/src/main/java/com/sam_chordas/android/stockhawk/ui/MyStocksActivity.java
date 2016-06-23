@@ -1,7 +1,7 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
- import android.content.BroadcastReceiver;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -56,21 +56,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+  BroadcastReceiver mBroadcastReceiver;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_my_stocks);
     mContext = this;
-
-    // Register receiver for local intent of INVALID_STOCK_SYMBOL
-    IntentFilter intentFilter = new IntentFilter(StockTaskService.ACTION_INVALID_SYMBOL);
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-      @Override public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, R.string.invalid_stock_no_added, Toast.LENGTH_SHORT).show();
-      }
-    };
-    LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
 
     // Get Network Info
     ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -184,6 +176,21 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onResume() {
     super.onResume();
     getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+
+    // Register receiver for local intent of INVALID_STOCK_SYMBOL
+    IntentFilter intentFilter = new IntentFilter(StockTaskService.ACTION_INVALID_SYMBOL);
+    mBroadcastReceiver = new BroadcastReceiver() {
+      @Override public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context, R.string.invalid_stock_no_added, Toast.LENGTH_SHORT).show();
+      }
+    };
+    LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, intentFilter);
+
+  }
+  @Override
+  protected void onPause() {
+    super.onPause();
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
   }
 
   public void networkToast() {
