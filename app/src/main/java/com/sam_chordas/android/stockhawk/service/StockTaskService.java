@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -128,7 +129,7 @@ public class StockTaskService extends GcmTaskService{
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DATE, -1); // Yesterday
       String endDate = dateFormat.format(cal.getTime());
-      cal.add(Calendar.YEAR, -1); // A year before yesterday
+      cal.add(Calendar.MONTH, -3); // A year before yesterday
       String startDate = dateFormat.format(cal.getTime());
       urlStringBuilder.replace(110, 113, startDate);
       urlStringBuilder.replace(143, 146, endDate);
@@ -159,9 +160,15 @@ public class StockTaskService extends GcmTaskService{
         if (urlString.matches(".*historical.*")) {
           Log.v(LOG_TAG, "RESPONSE: "+getResponse);
           // TODO 2: Process Json in Util
+          String[][] historialData = Utils.historialJsonToArray(getResponse);
+
           // Send out the response to StockDetail Activity
           Intent localIntent = new Intent(ACTION_SHOW_HISTORICAL);
-          localIntent.putExtra("json_response", getResponse);
+//          localIntent.putExtra("json_response", getResponse);
+          Bundle bundle = new Bundle();
+          bundle.putStringArray("date", historialData[0]);
+          bundle.putStringArray("adj_close", historialData[1]);
+          localIntent.putExtras(bundle);
           LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
 
         } else if (Utils.isStockSymbolValid(getResponse)){

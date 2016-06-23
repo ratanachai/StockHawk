@@ -49,6 +49,50 @@ public class Utils {
     }
     return true;
   }
+  public static String[][] historialJsonToArray(String jsonStr) {
+    String[][] data = null;
+    try{
+      JSONObject jsonObject = new JSONObject(jsonStr);
+      if (jsonObject != null && jsonObject.length() != 0){
+        jsonObject = jsonObject.getJSONObject("query");
+        int count = Integer.parseInt(jsonObject.getString("count"));
+        data = new String[2][count];
+        if (count == 1){
+          jsonObject = jsonObject.getJSONObject("results").getJSONObject("quote");
+          data[0][0] = jsonObject.getString("Date");
+          data[1][0] = jsonObject.getString("Adj_Close");
+
+        } else{
+          JSONArray resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+          if (resultsArray != null && resultsArray.length() != 0){
+            for (int i = 0; i < resultsArray.length(); i++){
+              jsonObject = resultsArray.getJSONObject(i);
+              data[0][i] = jsonObject.getString("Date");
+              data[1][i] = jsonObject.getString("Adj_Close");
+            }
+          }
+        }
+      }
+    } catch (JSONException e) { Log.e(LOG_TAG, "String to JSON failed: " + e); }
+
+    return data;
+  }
+  public static void trimArray(String[] arr, int freq){
+    for(int i=0; i < arr.length; i++){
+      if( i%freq != 0)
+        arr[i] = "";
+    }
+  }
+  public static float[] StringToFloatArray(String[] mAdjCloseStr) {
+    float[] mAdjClose = null;
+    if (mAdjCloseStr != null && mAdjCloseStr.length != 0) {
+      mAdjClose = new float[mAdjCloseStr.length];
+      for (int i = 0; i < mAdjCloseStr.length; i++){
+        mAdjClose[i] = Float.parseFloat(mAdjCloseStr[i]);
+      }
+    }
+    return mAdjClose;
+  }
 
   public static ArrayList quoteJsonToContentVals(String JSON){
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
@@ -124,5 +168,4 @@ public class Utils {
     }
     return builder.build();
   }
-
 }
