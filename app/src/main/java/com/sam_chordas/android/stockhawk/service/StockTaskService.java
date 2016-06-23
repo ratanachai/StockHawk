@@ -158,16 +158,15 @@ public class StockTaskService extends GcmTaskService{
         result = GcmNetworkManager.RESULT_SUCCESS;
 
         if (urlString.matches(".*historical.*")) {
-          Log.v(LOG_TAG, "RESPONSE: "+getResponse);
-          // TODO 2: Process Json in Util
+          // Parse JSON into Array of 2xN
           String[][] historialData = Utils.historialJsonToArray(getResponse);
 
           // Send out the response to StockDetail Activity
           Intent localIntent = new Intent(ACTION_SHOW_HISTORICAL);
-//          localIntent.putExtra("json_response", getResponse);
           Bundle bundle = new Bundle();
           bundle.putStringArray("date", historialData[0]);
           bundle.putStringArray("adj_close", historialData[1]);
+          bundle.putInt("count", historialData[0].length);
           localIntent.putExtras(bundle);
           LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
 

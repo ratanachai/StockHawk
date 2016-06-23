@@ -40,7 +40,7 @@ public class StockDetailActivity extends Activity {
                 mAdjClose = Utils.StringToFloatArray(data.getStringArray("adj_close"));
                 Collections.reverse(Arrays.asList(mDate));
                 Collections.reverse(Arrays.asList(mAdjClose));
-                Utils.trimArray(mDate, 4);
+                Utils.trimArray(mDate, data.getInt("count")/4);
                 
                 // Draw a chart
                 LineChartView lineChart = (LineChartView) findViewById(R.id.line_chart);

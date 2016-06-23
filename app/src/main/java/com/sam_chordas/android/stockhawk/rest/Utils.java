@@ -79,8 +79,8 @@ public class Utils {
   }
   public static void trimArray(String[] arr, int freq){
     for(int i=0; i < arr.length; i++){
-      if( i%freq != 0)
-        arr[i] = "";
+      if(i%freq != 0)  arr[i] = "";
+      else arr[i] = arr[i].replaceFirst("\\d\\d\\d\\d\\-","");
     }
   }
   public static float[] StringToFloatArray(String[] mAdjCloseStr) {
