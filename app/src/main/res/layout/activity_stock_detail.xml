@@ -13,19 +13,29 @@
 
         <include layout="@layout/list_item_quote"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="@string/chart_label" />
-        <com.db.chart.view.LineChartView
-            android:id="@+id/line_chart"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="10dp"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@color/md_divider_white">
+
+            <com.db.chart.view.LineChartView
+                android:id="@+id/line_chart"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/chart_axis_side_margin"
+                android:paddingTop="@dimen/chart_axis_side_margin"
+                android:paddingBottom="@dimen/chart_axis_side_margin"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+            <TextView
+                android:text="@string/chart_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="40dp"
+                />
+
+        </FrameLayout>
+
     </LinearLayout>
 </ScrollView>
