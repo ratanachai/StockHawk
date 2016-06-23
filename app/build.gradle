@@ -35,4 +35,5 @@ dependencies {
     transitive = true
   }
   compile 'com.diogobernardino:williamchart:2.2'
+  compile 'org.apache.commons:commons-lang3:3.4'
 }

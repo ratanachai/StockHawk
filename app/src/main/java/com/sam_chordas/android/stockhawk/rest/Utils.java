@@ -83,10 +83,10 @@ public class Utils {
       else arr[i] = arr[i].replaceFirst("\\d\\d\\d\\d\\-","");
     }
   }
-  public static float[] StringToFloatArray(String[] mAdjCloseStr) {
-    float[] mAdjClose = null;
+  public static Float[] StringToFloatArray(String[] mAdjCloseStr) {
+    Float[] mAdjClose = null;
     if (mAdjCloseStr != null && mAdjCloseStr.length != 0) {
-      mAdjClose = new float[mAdjCloseStr.length];
+      mAdjClose = new Float[mAdjCloseStr.length];
       for (int i = 0; i < mAdjCloseStr.length; i++){
         mAdjClose[i] = Float.parseFloat(mAdjCloseStr[i]);
       }
@@ -167,5 +167,12 @@ public class Utils {
       e.printStackTrace();
     }
     return builder.build();
+  }
+
+  public static float avg(Float[] mAdjClose) {
+    float sum = 0.0f;
+    for(int i=0; i < mAdjClose.length ; i++)
+      sum = sum + mAdjClose[i];
+    return sum/mAdjClose.length;
   }
 }
