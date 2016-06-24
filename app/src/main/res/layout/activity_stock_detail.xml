@@ -40,9 +40,10 @@
                 android:paddingBottom="@dimen/chart_axis_side_margin"
                 android:layout_width="match_parent"
                 android:layout_height="180dp" />
-            <TextView
+            <TextView android:id="@+id/chart_label"
                 android:text="@string/chart_label"
                 tools:text="Adj close price from 03-23 to 06-24"
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
@@ -62,7 +63,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/avg" android:layout_toStartOf="@+id/avg"
                 android:layout_marginRight="@dimen/label_margin_from_center" android:layout_marginEnd="@dimen/label_margin_from_center"
-                android:paddingRight="5dp" android:paddingEnd="5dp"
+                android:paddingRight="4dp" android:paddingEnd="4dp"
                 />
             <TextView
                 android:id="@+id/min"

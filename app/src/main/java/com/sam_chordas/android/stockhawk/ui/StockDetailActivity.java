@@ -76,10 +76,13 @@ public class StockDetailActivity extends Activity {
                 mAdjClose = Utils.StringToFloatArray(data.getStringArray("adj_close"));
                 Collections.reverse(Arrays.asList(mDate));
                 Collections.reverse(Arrays.asList(mAdjClose));
+                String data_from_to = " from " + mDate[0].replaceFirst("\\d\\d\\d\\d\\-","")
+                        + " to " + mDate[mDate.length - 1].replaceFirst("\\d\\d\\d\\d\\-","");
                 Utils.trimArray(mDate, data.getInt("count")/4);
                 float min = Collections.min(Arrays.asList(mAdjClose));
                 float max = Collections.max(Arrays.asList(mAdjClose));
                 float avg = Utils.avg(mAdjClose);
+                ((TextView)findViewById(R.id.chart_label)).append(data_from_to);
                 ((TextView)findViewById(R.id.min)).setText(String.format("%.2f", min));
                 ((TextView)findViewById(R.id.max)).setText(String.format("%.2f", max));
                 ((TextView)findViewById(R.id.avg)).setText(String.format("%.2f", avg));
