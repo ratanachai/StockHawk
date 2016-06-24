@@ -104,6 +104,13 @@ public class StocksWidgetService extends RemoteViewsService {
                 else
                     views.setViewVisibility(R.id.bid_price, View.VISIBLE);
 
+                // Open StockDetailActivity on click
+                Intent fillInIntent = new Intent();
+                fillInIntent.putExtra("symbol", data.getString(INDEX_QUOTES_SYMBOL));
+                fillInIntent.putExtra("bid_price", data.getString(INDEX_QUOTES_BIDPRICE));
+                fillInIntent.putExtra("change", data.getString(INDEX_QUOTES_PERCENT_CHANGE));
+                views.setOnClickFillInIntent(R.id.widget_listitem, fillInIntent);
+
                 return views;
             }
 
