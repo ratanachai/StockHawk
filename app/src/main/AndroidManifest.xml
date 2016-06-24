@@ -25,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.StockDetailActivity">
+        <activity android:name=".ui.StockDetailActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <!-- GCM service -->
         <service android:name=".service.StockTaskService"
