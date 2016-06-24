@@ -71,7 +71,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       // Run the initialize task service so that some stocks appear upon an empty database
       mServiceIntent.putExtra("tag", "init");
       if (isConnected) startService(mServiceIntent);
-      else networkToast();
+      else Utils.networkToast(this);
     }
 
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -135,7 +135,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               })
               .show();
         } else {
-          networkToast();
+          Utils.networkToast(mContext);
         }
 
       }
@@ -188,10 +188,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   protected void onPause() {
     super.onPause();
     LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
-  }
-
-  public void networkToast() {
-    Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
   }
 
   public void restoreActionBar() {

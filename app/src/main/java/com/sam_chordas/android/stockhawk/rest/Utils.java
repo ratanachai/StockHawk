@@ -6,7 +6,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 
@@ -29,6 +31,9 @@ public class Utils {
             = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
     return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+  }
+  public static void networkToast(Context context) {
+    Toast.makeText(context, context.getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
   }
 
   public static boolean isStockSymbolValid(String json) {

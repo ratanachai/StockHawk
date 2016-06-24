@@ -36,13 +36,20 @@ public class StockDetailActivity extends Activity {
         setContentView(R.layout.activity_stock_detail);
         Intent in = getIntent(); // Intent from MyStocksActivity class
 
-        if(savedInstanceState == null){
+        if(savedInstanceState == null
+                || !savedInstanceState.containsKey("chart_label")
+                || !savedInstanceState.containsKey("chart_data")){
+
             // Call intentService to gcmTaskService
-            Intent intent = new Intent(this, StockIntentService.class);
-            intent.putExtra("tag", "historical");
-            intent.putExtra("symbol", in.getStringExtra("symbol"));
-            intent.setAction(GET_STOCK_DETAIL_ACTION);
-            startService(intent);
+            if(Utils.isNetworkAvailable(this)) {
+                Intent intent = new Intent(this, StockIntentService.class);
+                intent.putExtra("tag", "historical");
+                intent.putExtra("symbol", in.getStringExtra("symbol"));
+                intent.setAction(GET_STOCK_DETAIL_ACTION);
+                startService(intent);
+            }else {
+                Utils.networkToast(this);
+            }
         }else{
             mDate = savedInstanceState.getStringArray("chart_label");
             mAdjClose = ArrayUtils.toObject(savedInstanceState.getFloatArray("chart_data"));
