@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    >
+    <LinearLayout android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context="com.sam_chordas.android.stockhawk.ui.StockDetailActivity">
+        tools:context="com.sam_chordas.android.stockhawk.ui.StockDetailActivity"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        >
+        <!-- Today data Section -->
         <TextView
             style="@style/StockDetailHeader"
             android:text="Today"
@@ -16,6 +16,8 @@
             android:fontFamily="sans-serif"
              />
         <include layout="@layout/list_item_quote"/>
+
+        <!-- Historical data Section -->
         <TextView
             style="@style/StockDetailHeader"
             android:text="Past 3 Months"
@@ -23,7 +25,8 @@
             android:background="@color/material_blue_400"
             android:fontFamily="sans-serif"
             />
-        <FrameLayout
+        <FrameLayout android:id="@+id/chart_wrapper"
+            android:visibility="invisible" tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
@@ -46,6 +49,70 @@
                 android:layout_marginBottom="40dp"
                 />
         </FrameLayout>
-
+        <RelativeLayout android:id="@+id/min_max_wrapper"
+            android:visibility="invisible" tools:visibility="visible"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent" android:layout_height="50dp"
+            >
+            <!-- LEFT -->
+            <TextView
+                android:id="@+id/label_min"
+                style="@style/MinMaxLabelTextStyle"
+                android:text="min"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/avg" android:layout_toStartOf="@+id/avg"
+                android:layout_marginRight="@dimen/label_margin_from_center" android:layout_marginEnd="@dimen/label_margin_from_center"
+                android:paddingRight="5dp" android:paddingEnd="5dp"
+                />
+            <TextView
+                android:id="@+id/min"
+                style="@style/PriceTextStyle"
+                tools:text="11.00"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/avg" android:layout_toStartOf="@+id/avg"
+                android:layout_marginRight="@dimen/price_margin_from_center" android:layout_marginEnd="@dimen/price_margin_from_center"
+                android:background="@drawable/percent_change_pill_red"
+                android:paddingLeft="3sp" android:paddingStart="3sp"
+                android:paddingRight="3sp" android:paddingEnd="3sp"
+                />
+            <!-- MIDDLE -->
+            <TextView
+                android:id="@+id/label_avg"
+                style="@style/MinMaxLabelTextStyle"
+                android:text="avg"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                />
+            <TextView
+                android:id="@+id/avg"
+                style="@style/PriceTextStyle"
+                tools:text="50.90"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/percent_change_pill"
+                android:paddingLeft="3sp" android:paddingStart="3sp"
+                android:paddingRight="3sp" android:paddingEnd="3sp"
+                />
+            <!-- RIGHT -->
+            <TextView
+                android:id="@+id/label_max"
+                style="@style/MinMaxLabelTextStyle"
+                android:text="max"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/avg" android:layout_toEndOf="@id/avg"
+                android:layout_marginLeft="@dimen/label_margin_from_center" android:layout_marginStart="@dimen/label_margin_from_center"
+                />
+            <TextView
+                android:id="@+id/max"
+                style="@style/PriceTextStyle"
+                tools:text="99.50"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/avg" android:layout_toEndOf="@id/avg"
+                android:layout_marginLeft="@dimen/price_margin_from_center" android:layout_marginStart="@dimen/price_margin_from_center"
+                android:background="@drawable/percent_change_pill_green"
+                android:paddingLeft="3sp" android:paddingStart="3sp"
+                android:paddingRight="3sp" android:paddingEnd="3sp"
+                />
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>

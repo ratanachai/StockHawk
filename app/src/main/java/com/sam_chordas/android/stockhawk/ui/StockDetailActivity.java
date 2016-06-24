@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.db.chart.model.LineSet;
@@ -79,6 +80,10 @@ public class StockDetailActivity extends Activity {
                 float min = Collections.min(Arrays.asList(mAdjClose));
                 float max = Collections.max(Arrays.asList(mAdjClose));
                 float avg = Utils.avg(mAdjClose);
+                ((TextView)findViewById(R.id.min)).setText(String.format("%.2f", min));
+                ((TextView)findViewById(R.id.max)).setText(String.format("%.2f", max));
+                ((TextView)findViewById(R.id.avg)).setText(String.format("%.2f", avg));
+                findViewById(R.id.min_max_wrapper).setVisibility(View.VISIBLE);
                 Log.v("min, avg, max", min +", " + avg + ", " + max);
 //                Log.v("Date x Data", Integer.toString(mDate.length) + " x " + Integer.toString(mAdjClose.length));
 
@@ -89,6 +94,7 @@ public class StockDetailActivity extends Activity {
                 lineChart.setAxisColor(Color.GRAY).setLabelsColor(Color.GRAY).setStep(Math.round(max/4.0f));
                 lineChart.addData(dataset);
                 lineChart.show();
+                findViewById(R.id.chart_wrapper).setVisibility(View.VISIBLE);
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, intentFilter);

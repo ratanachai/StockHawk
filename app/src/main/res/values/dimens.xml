@@ -9,6 +9,9 @@
          https://developer.android.com/design/patterns/navigation-drawer.html -->
   <dimen name="navigation_drawer_width">240dp</dimen>
 
+  <!-- StockDetailActivity -->
+  <dimen name="label_margin_from_center">50dp</dimen>
+  <dimen name="price_margin_from_center">46dp</dimen>
   <!-- One Stock Widget -->
   <dimen name="widget_one_stock_default_height">40dp</dimen>
   <dimen name="widget_one_stock_default_width">180dp</dimen>
