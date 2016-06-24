@@ -1,6 +1,10 @@
 package com.sam_chordas.android.stockhawk.rest;
 
+import android.app.Activity;
 import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
@@ -16,10 +20,16 @@ import java.util.ArrayList;
  * Created by sam_chordas on 10/8/15.
  */
 public class Utils {
-
   private static String LOG_TAG = Utils.class.getSimpleName();
-
   public static boolean showPercent = true;
+
+  //Based on a http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+  public static boolean isNetworkAvailable(Activity activity) {
+    ConnectivityManager connectivityManager
+            = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+  }
 
   public static boolean isStockSymbolValid(String json) {
     try{
