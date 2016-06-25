@@ -113,6 +113,7 @@ public class Utils {
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
     JSONObject jsonObject = null;
     JSONArray resultsArray = null;
+    logLongString("==JSN==", JSON);
     try{
       jsonObject = new JSONObject(JSON);
       if (jsonObject != null && jsonObject.length() != 0){
@@ -166,10 +167,13 @@ public class Utils {
         QuoteProvider.Quotes.CONTENT_URI);
     try {
       String change = jsonObject.getString("Change");
+      String changeInPercent = jsonObject.getString("ChangeinPercent");
+      if (change.equals("null")) change = "+0.00";
+      if (changeInPercent.equals("null")) changeInPercent = "+0.00%";
+
       builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
       builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
-      builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
-          jsonObject.getString("ChangeinPercent"), true));
+      builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(changeInPercent, true));
       builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
       builder.withValue(QuoteColumns.ISCURRENT, 1);
       if (change.charAt(0) == '-'){
@@ -189,5 +193,16 @@ public class Utils {
     for(int i=0; i < mAdjClose.length ; i++)
       sum = sum + mAdjClose[i];
     return sum/mAdjClose.length;
+  }
+  // To view very long string in logcat
+  // Credit http://stackoverflow.com/questions/7606077/how-to-display-long-messages-in-logcat
+  public static void logLongString(String TAG, String message) {
+    int maxLogSize = 2000;
+    for(int i = 0; i <= message.length() / maxLogSize; i++) {
+      int start = i * maxLogSize;
+      int end = (i+1) * maxLogSize;
+      end = end > message.length() ? message.length() : end;
+      android.util.Log.d(TAG, message.substring(start, end));
+    }
   }
 }
