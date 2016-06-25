@@ -42,6 +42,8 @@ public class StocksWidgetProvider extends AppWidgetProvider {
 
             // Click on list_item to launch detail activity
             Intent clickIntentTemplate = new Intent(context, StockDetailActivity.class);
+            // Doing all these so that hitting back on DetailActivity will go back to MainActivity
+            // Not going back to launcher app rightaway. (Something users probably expect).
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)
                     .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

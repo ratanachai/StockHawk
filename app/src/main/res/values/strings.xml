@@ -15,4 +15,5 @@
   <string name="stock_already_saved">This stock is already saved!</string>
   <string name="invalid_stock_no_added">Invalid stock symbol. No stock added.</string>
   <string name="chart_label">Adj Close price</string>
+  <string name="title_stock_detail_activity">Stock Detail</string>
 </resources>
