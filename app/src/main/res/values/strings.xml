@@ -16,4 +16,5 @@
   <string name="invalid_stock_no_added">Invalid stock symbol. No stock added.</string>
   <string name="chart_label">Adj Close price</string>
   <string name="title_stock_detail_activity">Stock Detail</string>
+  <string name="desc_chart">Showing Line Chart of Adjusted Close Price</string>
 </resources>

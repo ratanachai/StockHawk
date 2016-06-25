@@ -28,6 +28,7 @@ public class StockDetailActivity extends Activity {
     public static final String GET_STOCK_DETAIL_ACTION = "com.sam_chordas.android.stockhawk.ui.GET_STOCK_DETAIL";
     private String[] mDate;
     private Float[] mAdjClose;
+    private String mFromDate, mToDate;
     BroadcastReceiver mBroadcastReceiver;
 
     @Override
@@ -53,20 +54,26 @@ public class StockDetailActivity extends Activity {
         }else{
             mDate = savedInstanceState.getStringArray("chart_label");
             mAdjClose = ArrayUtils.toObject(savedInstanceState.getFloatArray("chart_data"));
+            mFromDate = savedInstanceState.getString("chart_from_date");
+            mToDate = savedInstanceState.getString("chart_to_date");
             drawChartShowData();
         }
 
-        // Set TextViews in layout
-        ((TextView)findViewById(R.id.stock_symbol)).setText(in.getStringExtra("symbol"));
-        TextView bidPriceTv = (TextView)findViewById(R.id.bid_price);
-        TextView change = (TextView)findViewById(R.id.change);
+        // Set TextViews in Today Section
+        View listItem = findViewById(R.id.list_item_quote);
+        TextView symbol = ((TextView)listItem.findViewById(R.id.stock_symbol));
+        TextView bidPriceTv = (TextView)listItem.findViewById(R.id.bid_price);
+        TextView change = (TextView)listItem.findViewById(R.id.change);
+        symbol.setText(in.getStringExtra("symbol"));
         bidPriceTv.setText(in.getStringExtra("bid_price"));
         change.setText(in.getStringExtra("change"));
+        String readLine = in.getStringExtra("symbol") + in.getStringExtra("bid_price") + ". " +
+                in.getStringExtra("change"); //Put full-stop so TalkBack can read minus/plus in change
+        listItem.setContentDescription(readLine);
         if (Float.parseFloat(in.getStringExtra("change").replace("%","")) < 0)
             change.setBackgroundDrawable(getResources().getDrawable(R.drawable.percent_change_pill_red));
         else
             change.setBackgroundDrawable(getResources().getDrawable(R.drawable.percent_change_pill_green));
-
     }
 
     @Override
@@ -76,6 +83,11 @@ public class StockDetailActivity extends Activity {
             outState.putStringArray("chart_label", mDate);
         if(mAdjClose != null && mAdjClose.length !=0)
             outState.putFloatArray("chart_data", ArrayUtils.toPrimitive(mAdjClose));
+        if(mToDate != null)
+            outState.putString("chart_to_date", mToDate);
+        if(mFromDate != null)
+            outState.putString("chart_from_date", mFromDate);
+
     }
 
     @Override
@@ -90,15 +102,19 @@ public class StockDetailActivity extends Activity {
                 // Get data ready for Chart
                 // 1. Change data to array of float
                 // 2. Reverse both label and data array
-                // 3. Trim out label to just 5 label
-                // 4. Draw Chart, show min/max/avg
+                // 3. Save up Date for Screen Reader (Talkback)
+                // 4. Trim out label to just 5 label
+                // 5. Draw Chart, show min/max/avg
                 Bundle data = intent.getExtras();
                 mDate = data.getStringArray("date");
                 mAdjClose = Utils.StringToFloatArray(data.getStringArray("adj_close"));
                 Collections.reverse(Arrays.asList(mDate));
                 Collections.reverse(Arrays.asList(mAdjClose));
+                mFromDate = new String(mDate[0]);
+                mToDate = new String(mDate[mDate.length - 1]);
                 Utils.trimArray(mDate, data.getInt("count")/4);
                 drawChartShowData();
+
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, intentFilter);
@@ -107,8 +123,7 @@ public class StockDetailActivity extends Activity {
 
     private void drawChartShowData() {
         // Get data ready
-        String fromToLabel = " from " + mDate[0].replaceFirst("\\d\\d\\d\\d\\-","")
-                + " to " + mDate[mDate.length - 1].replaceFirst("\\d\\d\\d\\d\\-","");
+        String fromToLabel = " from " + mDate[0] + " to " + mDate[mDate.length - 1];
         float min = Collections.min(Arrays.asList(mAdjClose));
         float max = Collections.max(Arrays.asList(mAdjClose));
         float avg = Utils.avg(mAdjClose);
@@ -128,6 +143,8 @@ public class StockDetailActivity extends Activity {
         lineChart.addData(dataset);
         lineChart.show();
         findViewById(R.id.chart_wrapper).setVisibility(View.VISIBLE);
+        findViewById(R.id.chart_wrapper).setContentDescription(getString(R.string.desc_chart) +
+                " from" + mFromDate + " to " + mToDate);
     }
 
     @Override
