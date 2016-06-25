@@ -193,13 +193,13 @@ public class StockTaskService extends GcmTaskService{
 
       } catch (IOException e){ e.printStackTrace(); }
     }
-    updateWidgets(); //Update on every data fetch
+    updateWidgets(mContext); //Update on every data fetch
     return result;
   }
 
-  private void updateWidgets() {
+  public static void updateWidgets(Context context) {
     Log.v("LOG_TAG", "== UpdateWidgets ==");
-    Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED).setPackage(mContext.getPackageName());
-    mContext.sendBroadcast(dataUpdatedIntent);
+    Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED).setPackage(context.getPackageName());
+    context.sendBroadcast(dataUpdatedIntent);
   }
 }
