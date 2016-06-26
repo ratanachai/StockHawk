@@ -35,7 +35,9 @@
             <com.db.chart.view.LineChartView
                 android:id="@+id/line_chart"
                 android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/chart_axis_side_margin"
+                android:paddingStart="@dimen/chart_axis_side_margin"
                 android:paddingTop="@dimen/chart_axis_side_margin"
                 android:paddingBottom="@dimen/chart_axis_side_margin"
                 android:layout_width="match_parent"

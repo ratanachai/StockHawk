@@ -107,11 +107,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
                   // On FAB click, receive user input. Make sure the stock doesn't already exist
                   // in the DB and proceed accordingly
-
                   Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                       new String[] { QuoteColumns.SYMBOL }, QuoteColumns.SYMBOL + "= ?",
                       new String[] { input.toString().toUpperCase() }, null);
-
 
                   if (c.getCount() != 0) {
                     // Found stock in DB, so toast and do nothing

@@ -7,7 +7,9 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/widget_padding"
+    android:paddingStart="@dimen/widget_padding"
     android:paddingRight="@dimen/widget_padding"
+    android:paddingEnd="@dimen/widget_padding"
     >
     <TextView
         android:id="@+id/stock_symbol"
