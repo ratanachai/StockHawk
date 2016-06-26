@@ -17,4 +17,7 @@
   <string name="chart_label">Adj Close price</string>
   <string name="title_stock_detail_activity">Stock Detail</string>
   <string name="desc_chart">Showing Line Chart of Adjusted Close Price</string>
+  <string name="min">min</string>
+  <string name="avg">avg</string>
+  <string name="max">max</string>
 </resources>

@@ -61,7 +61,7 @@
             <TextView
                 android:id="@+id/label_min"
                 style="@style/MinMaxLabelTextStyle"
-                android:text="min"
+                android:text="@string/min"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/avg" android:layout_toStartOf="@+id/avg"
                 android:layout_marginRight="@dimen/label_margin_from_center" android:layout_marginEnd="@dimen/label_margin_from_center"
@@ -82,7 +82,7 @@
             <TextView
                 android:id="@+id/label_avg"
                 style="@style/MinMaxLabelTextStyle"
-                android:text="avg"
+                android:text="@string/avg"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 />
@@ -100,7 +100,7 @@
             <TextView
                 android:id="@+id/label_max"
                 style="@style/MinMaxLabelTextStyle"
-                android:text="max"
+                android:text="@string/max"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@id/avg" android:layout_toEndOf="@id/avg"
                 android:layout_marginLeft="@dimen/label_margin_from_center" android:layout_marginStart="@dimen/label_margin_from_center"
