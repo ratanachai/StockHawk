@@ -8,6 +8,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -68,10 +69,22 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     // GCMTaskService can only schedule tasks, they cannot execute immediately
     mServiceIntent = new Intent(this, StockIntentService.class);
     if (savedInstanceState == null) {
-      // Run the initialize task service so that some stocks appear upon an empty database
-      mServiceIntent.putExtra("tag", "init");
-      if (isConnected) startService(mServiceIntent);
-      else Utils.networkToast(this);
+
+      // Fetch pre-defined stocks only if it is the first run ("init")
+      SharedPreferences prefs = getSharedPreferences("com.sam_chordas.android.stockhawk", MODE_PRIVATE);
+      if (prefs.getBoolean("init", true)) {
+        prefs.edit().putBoolean("init", false).commit();
+        mServiceIntent.putExtra("tag", "init");
+      }else {
+        // "periodic" is for every onCreate() and timed schedule (in TaskService)
+        mServiceIntent.putExtra("tag", "periodic");
+      }
+
+      // Run it
+      if (isConnected)
+        startService(mServiceIntent);
+      else
+        Utils.networkToast(this);
     }
 
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -180,7 +193,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       }
     };
     LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, intentFilter);
-
   }
   @Override
   protected void onPause() {

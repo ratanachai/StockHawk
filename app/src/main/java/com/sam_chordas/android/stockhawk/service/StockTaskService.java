@@ -88,15 +88,24 @@ public class StockTaskService extends GcmTaskService{
       initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
           new String[] { "Distinct " + QuoteColumns.SYMBOL }, null, null, null);
 
-      // Build Query for these preset Stock Symbol, if DB is empty
-      if (initQueryCursor.getCount() == 0 || initQueryCursor == null){
+
+      // 0) Build Query for these preset Stock Symbol, if first_run and DB is empty
+      if (params.getTag().equals("init") &&
+              (initQueryCursor == null || initQueryCursor.getCount() == 0)) {
+
         // Init task. Populates DB with quotes for the symbols seen below
         try {
           urlStringBuilder.append(URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {e.printStackTrace();}
+        } catch (UnsupportedEncodingException e) {
+          e.printStackTrace();
+        }
 
-      // Build Query for update of existing Symbols in the DB
-      } else if (initQueryCursor != null){
+      // 1) Early return if nothing in DB to update
+      } else if (initQueryCursor == null || initQueryCursor.getCount() == 0) {
+        return GcmNetworkManager.RESULT_FAILURE;
+
+      // 2) Build Query for update of existing Symbols in the DB
+      } else if (initQueryCursor != null && initQueryCursor.getCount() != 0){
         DatabaseUtils.dumpCursor(initQueryCursor);
         initQueryCursor.moveToFirst();
         for (int i = 0; i < initQueryCursor.getCount(); i++){
@@ -110,7 +119,7 @@ public class StockTaskService extends GcmTaskService{
         } catch (UnsupportedEncodingException e) {e.printStackTrace();}
       }
 
-    // Build Query for new stock user want to add
+    // 3) Build Query for new stock user want to add
     } else if (params.getTag().equals("add")){
       isUpdate = false;
       // get symbol from params.getExtra and build query
@@ -119,7 +128,7 @@ public class StockTaskService extends GcmTaskService{
         urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\")", "UTF-8"));
       } catch (UnsupportedEncodingException e) {e.printStackTrace();}
 
-    // Build Query for historical data for Stock Detail screen
+    // 4) Build Query for historical data for Stock Detail screen
     } else if (params.getTag().equals("historical")) {
       isUpdate = false;
       String stockInput = params.getExtras().getString("symbol");
@@ -139,7 +148,7 @@ public class StockTaskService extends GcmTaskService{
       } catch (UnsupportedEncodingException e) {e.printStackTrace();}
 
     }
-    // finalize the URL for the API query.
+    // Finalize the URL for the API query.
     urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
         + "org%2Falltableswithkeys&callback=");
 
@@ -147,7 +156,7 @@ public class StockTaskService extends GcmTaskService{
     String getResponse;
     int result = GcmNetworkManager.RESULT_FAILURE;
 
-    // Now Get the JSON from Yahoo using okhttp
+    // Fetch the JSON from Yahoo using okhttp
     if (urlStringBuilder != null){
       urlString = urlStringBuilder.toString();
       Log.v(LOG_TAG, urlString);

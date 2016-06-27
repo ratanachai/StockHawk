@@ -31,6 +31,7 @@ public class StockIntentService extends IntentService {
     }
     // Call OnRunTask from the intent service to force it to run immediately instead of scheduling a task.
     int result = stockTaskService.onRunTask(new TaskParams(intent.getStringExtra("tag"), args));
+    Log.v("=== result ===", String.valueOf(result));
   }
 
 }
