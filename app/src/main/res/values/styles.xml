@@ -59,5 +59,9 @@
     <item name="android:textColor">#FFF</item>
     <item name="android:textStyle">bold</item>
   </style>
+  <style name="EmptyViewBigText">
+    <item name="android:gravity">center</item>
+    <item name="android:textAppearance">?android:textAppearanceLarge</item>
+  </style>
 
 </resources>

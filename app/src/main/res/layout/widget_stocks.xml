@@ -4,7 +4,7 @@
     android:padding="@dimen/widget_margin"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <!-- HEADER -->
     <FrameLayout
         android:id="@+id/widget_header"
         android:background="@color/material_blue_500"
@@ -17,6 +17,7 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_logo"/>
     </FrameLayout>
+    <!-- CONTENT in LISTVIEW -->
     <FrameLayout
         android:id="@+id/widget_stocks"
         android:layout_width="match_parent"
@@ -28,12 +29,11 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/widget_empty"
-            android:gravity="center"
+            style="@style/EmptyViewBigText"
             android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearanceLarge"
             android:text="@string/no_quotes_available"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
+            android:paddingLeft="50dp" android:paddingStart="50dp"
+            android:paddingRight="50dp" android:paddingEnd="50dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
