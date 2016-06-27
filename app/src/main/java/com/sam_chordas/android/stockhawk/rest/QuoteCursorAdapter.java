@@ -1,10 +1,12 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +81,13 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
     String symbol = c.getString(c.getColumnIndex(QuoteColumns.SYMBOL));
     mContext.getContentResolver().delete(QuoteProvider.Quotes.withSymbol(symbol), null, null);
     notifyItemRemoved(position);
+
+    // Check if now DB empty (If the stock deleted was the last one?)
+    Cursor afterCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+            new String[] { "Distinct " + QuoteColumns.SYMBOL }, null, null, null);
+    if (afterCursor == null || afterCursor.getCount() == 0)
+      LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(StockTaskService.ACTION_DATA_EMPTY));
+
     StockTaskService.updateWidgets(mContext); // Update Widget when a stock removed
   }
 

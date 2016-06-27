@@ -40,6 +40,10 @@ public class StockTaskService extends GcmTaskService{
   private Context mContext;
   private StringBuilder mStoredSymbols = new StringBuilder();
   private boolean isUpdate;
+  public static final String ACTION_DATA_EMPTY =
+          "com.sam_chordas.android.stockhawk.service.ACTION_DATA_EMPTY";
+  public static final String ACTION_DATA_ADDED =
+          "com.sam_chordas.android.stockhawk.service.ACTION_DATA_ADDED";
   public static final String ACTION_DATA_UPDATED =
           "com.sam_chordas.android.stockhawk.service.ACTION_DATA_UPDATED";
   public static final String ACTION_SHOW_HISTORICAL =
@@ -102,6 +106,9 @@ public class StockTaskService extends GcmTaskService{
 
       // 1) Early return if nothing in DB to update
       } else if (initQueryCursor == null || initQueryCursor.getCount() == 0) {
+
+        // Nothing in DB, neither in RecycleView, so tell Activity to show empty_view
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ACTION_DATA_EMPTY));
         return GcmNetworkManager.RESULT_FAILURE;
 
       // 2) Build Query for update of existing Symbols in the DB
@@ -190,14 +197,17 @@ public class StockTaskService extends GcmTaskService{
             }
             mContext.getContentResolver().applyBatch(
                     QuoteProvider.AUTHORITY, Utils.quoteJsonToContentVals(getResponse));
+
+            // Now there's something in DB, so tell Activity to show view, hide empty_view
+            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ACTION_DATA_ADDED));
+
           } catch (RemoteException | OperationApplicationException e){
             Log.e(LOG_TAG, "Error applying batch insert", e);
           }
 
         } else {
           // Stock Symbol Invalid: Sendout Local Broadcast to MyStocksActivity
-          Intent localIntent = new Intent(ACTION_INVALID_SYMBOL);
-          LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
+          LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ACTION_INVALID_SYMBOL));
         }
 
       } catch (IOException e){ e.printStackTrace(); }

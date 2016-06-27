@@ -70,13 +70,14 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mServiceIntent = new Intent(this, StockIntentService.class);
     if (savedInstanceState == null) {
 
-      // Fetch pre-defined stocks only if it is the first run ("init")
+      // 1. "init" is to Fetch pre-defined stocks only if it is the first run
       SharedPreferences prefs = getSharedPreferences("com.sam_chordas.android.stockhawk", MODE_PRIVATE);
       if (prefs.getBoolean("init", true)) {
         prefs.edit().putBoolean("init", false).commit();
         mServiceIntent.putExtra("tag", "init");
+
+      // 2. "periodic" is for every onCreate() and timed schedule (in TaskService)
       }else {
-        // "periodic" is for every onCreate() and timed schedule (in TaskService)
         mServiceIntent.putExtra("tag", "periodic");
       }
 
@@ -148,7 +149,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         } else {
           Utils.networkToast(mContext);
         }
-
       }
     });
 
@@ -185,14 +185,32 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     super.onResume();
     getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
 
-    // Register receiver for local intent of INVALID_STOCK_SYMBOL
-    IntentFilter intentFilter = new IntentFilter(StockTaskService.ACTION_INVALID_SYMBOL);
+    // Things to do when receive local broadcast in Receiver()
     mBroadcastReceiver = new BroadcastReceiver() {
       @Override public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, R.string.invalid_stock_no_added, Toast.LENGTH_SHORT).show();
+        if(intent.getAction().equals(StockTaskService.ACTION_INVALID_SYMBOL))
+          Toast.makeText(context, R.string.invalid_stock_no_added, Toast.LENGTH_SHORT).show();
+
+        // Show empty_view, Hide recycler_view
+        else if(intent.getAction().equals(StockTaskService.ACTION_DATA_EMPTY)){
+          findViewById(R.id.data_empty).setVisibility(View.VISIBLE);
+          findViewById(R.id.recycler_view).setVisibility(View.GONE);
+
+        // Show recycler_view, Hide empty_view
+        }else if(intent.getAction().equals(StockTaskService.ACTION_DATA_ADDED)){
+          findViewById(R.id.data_empty).setVisibility(View.GONE);
+          findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
+        }
+
       }
     };
-    LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, intentFilter);
+
+    // Register receiver for local intent of INVALID_STOCK_SYMBOL and DATA_EMPTY
+    LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
+    lbm.registerReceiver(mBroadcastReceiver, new IntentFilter(StockTaskService.ACTION_INVALID_SYMBOL));
+    lbm.registerReceiver(mBroadcastReceiver, new IntentFilter(StockTaskService.ACTION_DATA_EMPTY));
+    lbm.registerReceiver(mBroadcastReceiver, new IntentFilter(StockTaskService.ACTION_DATA_ADDED));
+
   }
   @Override
   protected void onPause() {
