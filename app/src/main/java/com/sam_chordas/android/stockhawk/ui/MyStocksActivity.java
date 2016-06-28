@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -39,7 +38,7 @@ import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
-public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MyStocksActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
   /**
    * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -56,7 +55,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   BroadcastReceiver mBroadcastReceiver;
-  private String mEmptyViewText;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -224,20 +222,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     lbm.registerReceiver(mBroadcastReceiver, new IntentFilter(StockTaskService.ACTION_DATA_EMPTY));
     lbm.registerReceiver(mBroadcastReceiver, new IntentFilter(StockTaskService.ACTION_DATA_ADDED));
 
-  }
-
-  // Show empty_view, Hide recycler_view
-  private void showEmptyView(String text){
-    TextView tv = (TextView)findViewById(R.id.empty_view);
-    tv.setText(text);
-    tv.setVisibility(View.VISIBLE);
-    mEmptyViewText = text;
-  }
-
-  // Show recycler_view, Hide empty_view
-  private void hideEmptyView(){
-    findViewById(R.id.empty_view).setVisibility(View.GONE);
-    mEmptyViewText = null;
   }
 
   @Override

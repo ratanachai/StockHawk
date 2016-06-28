@@ -1,7 +1,6 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class StockDetailActivity extends Activity {
+public class StockDetailActivity extends BaseActivity {
     public static final String GET_STOCK_DETAIL_ACTION = "com.sam_chordas.android.stockhawk.ui.GET_STOCK_DETAIL";
     private String[] mDate;
     private Float[] mAdjClose;
@@ -50,6 +49,7 @@ public class StockDetailActivity extends Activity {
                 startService(intent);
             }else {
                 Utils.networkToast(this);
+                showEmptyView(getString(R.string.data_might_outdated));
             }
         }else{
             mDate = savedInstanceState.getStringArray("chart_label");
@@ -87,7 +87,8 @@ public class StockDetailActivity extends Activity {
             outState.putString("chart_to_date", mToDate);
         if(mFromDate != null)
             outState.putString("chart_from_date", mFromDate);
-
+        if(mEmptyViewText != null)
+            outState.putString("empty_view_text", mEmptyViewText);
     }
 
     @Override
@@ -114,6 +115,7 @@ public class StockDetailActivity extends Activity {
                 mToDate = new String(mDate[mDate.length - 1]);
                 Utils.trimArray(mDate, data.getInt("count")/4);
                 drawChartShowData();
+                hideEmptyView();
 
             }
         };
