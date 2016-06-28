@@ -217,7 +217,6 @@ public class StockTaskService extends GcmTaskService{
   }
 
   public static void updateWidgets(Context context) {
-    Log.v("LOG_TAG", "== UpdateWidgets ==");
     Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED).setPackage(context.getPackageName());
     context.sendBroadcast(dataUpdatedIntent);
   }
