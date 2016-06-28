@@ -7,6 +7,7 @@
   <string name="input_hint" translatable="false">FB</string>
   <string name="input_prefill" translatable="false"></string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+  <string name="data_might_outdated">Beware!\nYour data, if there\'s any, might be out of dated.</string>
   <string name="title_widget_stocks">All Stocks</string>
   <string name="title_widget_one_stock">One Stock</string>
   <string name="no_quotes_available">No Stock information available</string>

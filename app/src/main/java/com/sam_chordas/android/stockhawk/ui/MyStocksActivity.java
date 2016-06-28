@@ -56,6 +56,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   BroadcastReceiver mBroadcastReceiver;
+  private String mEmptyViewText;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       // 1. "init" is to Fetch pre-defined stocks only if it is the first run
       SharedPreferences prefs = getSharedPreferences("com.sam_chordas.android.stockhawk", MODE_PRIVATE);
       if (prefs.getBoolean("init", true)) {
-        prefs.edit().putBoolean("init", false).commit();
+        prefs.edit().putBoolean("init", false).apply();
         mServiceIntent.putExtra("tag", "init");
 
       // 2. "periodic" is for every onCreate() and timed schedule (in TaskService)
@@ -86,6 +87,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         startService(mServiceIntent);
       else
         Utils.networkToast(this);
+
+    // RestoreSavedState
+    } else {
+      mEmptyViewText = savedInstanceState.getString("empty_view_text");
+      if(mEmptyViewText != null)
+        showEmptyView(mEmptyViewText);
     }
 
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -177,7 +184,17 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       // Schedule task with tag "periodic." This ensure that only the stocks present in the DB
       // are updated.
       GcmNetworkManager.getInstance(this).schedule(periodicTask);
+
+    } else if (mEmptyViewText == null){
+        showEmptyView(getString(R.string.data_might_outdated));
     }
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if (mEmptyViewText != null)
+      outState.putString("empty_view_text", mEmptyViewText);
   }
 
   @Override
@@ -191,15 +208,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         if(intent.getAction().equals(StockTaskService.ACTION_INVALID_SYMBOL))
           Toast.makeText(context, R.string.invalid_stock_no_added, Toast.LENGTH_SHORT).show();
 
-        // Show empty_view, Hide recycler_view
         else if(intent.getAction().equals(StockTaskService.ACTION_DATA_EMPTY)){
-          findViewById(R.id.data_empty).setVisibility(View.VISIBLE);
-          findViewById(R.id.recycler_view).setVisibility(View.GONE);
+          showEmptyView(getString(R.string.please_enter_some_stock));
 
-        // Show recycler_view, Hide empty_view
         }else if(intent.getAction().equals(StockTaskService.ACTION_DATA_ADDED)){
-          findViewById(R.id.data_empty).setVisibility(View.GONE);
-          findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
+          hideEmptyView();
         }
 
       }
@@ -212,6 +225,21 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     lbm.registerReceiver(mBroadcastReceiver, new IntentFilter(StockTaskService.ACTION_DATA_ADDED));
 
   }
+
+  // Show empty_view, Hide recycler_view
+  private void showEmptyView(String text){
+    TextView tv = (TextView)findViewById(R.id.empty_view);
+    tv.setText(text);
+    tv.setVisibility(View.VISIBLE);
+    mEmptyViewText = text;
+  }
+
+  // Show recycler_view, Hide empty_view
+  private void hideEmptyView(){
+    findViewById(R.id.empty_view).setVisibility(View.GONE);
+    mEmptyViewText = null;
+  }
+
   @Override
   protected void onPause() {
     super.onPause();
