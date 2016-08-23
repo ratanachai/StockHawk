@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.widget;
+package com.ratanachai.android.stockhawk.widget;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
@@ -12,10 +12,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
-import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.service.StockTaskService;
-import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
-import com.sam_chordas.android.stockhawk.ui.StockDetailActivity;
+import com.ratanachai.android.stockhawk.R;
+import com.ratanachai.android.stockhawk.service.StockTaskService;
+import com.ratanachai.android.stockhawk.ui.MyStocksActivity;
+import com.ratanachai.android.stockhawk.ui.StockDetailActivity;
 
 /**
  * Created by keng on 30/05/16.

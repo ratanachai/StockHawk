@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.widget;
+package com.ratanachai.android.stockhawk.widget;
 
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
@@ -14,10 +14,10 @@ import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.data.QuoteColumns;
-import com.sam_chordas.android.stockhawk.data.QuoteDatabase;
-import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.ratanachai.android.stockhawk.R;
+import com.ratanachai.android.stockhawk.data.QuoteColumns;
+import com.ratanachai.android.stockhawk.data.QuoteDatabase;
+import com.ratanachai.android.stockhawk.data.QuoteProvider;
 
 /**
  * Created by keng on 16/06/16, refer to

@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.service;
+package com.ratanachai.android.stockhawk.service;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,9 +14,9 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
-import com.sam_chordas.android.stockhawk.data.QuoteColumns;
-import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.rest.Utils;
+import com.ratanachai.android.stockhawk.data.QuoteColumns;
+import com.ratanachai.android.stockhawk.data.QuoteProvider;
+import com.ratanachai.android.stockhawk.rest.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -41,15 +41,15 @@ public class StockTaskService extends GcmTaskService{
   private StringBuilder mStoredSymbols = new StringBuilder();
   private boolean isUpdate;
   public static final String ACTION_DATA_EMPTY =
-          "com.sam_chordas.android.stockhawk.service.ACTION_DATA_EMPTY";
+          "com.ratanachai.android.stockhawk.service.ACTION_DATA_EMPTY";
   public static final String ACTION_DATA_ADDED =
-          "com.sam_chordas.android.stockhawk.service.ACTION_DATA_ADDED";
+          "com.ratanachai.android.stockhawk.service.ACTION_DATA_ADDED";
   public static final String ACTION_DATA_UPDATED =
-          "com.sam_chordas.android.stockhawk.service.ACTION_DATA_UPDATED";
+          "com.ratanachai.android.stockhawk.service.ACTION_DATA_UPDATED";
   public static final String ACTION_SHOW_HISTORICAL =
-          "com.sam_chordas.android.stockhawk.service.ACTION_SHOW_HISTORICAL";
+          "com.ratanachai.android.stockhawk.service.ACTION_SHOW_HISTORICAL";
   public static final String ACTION_INVALID_SYMBOL =
-          "com.sam_chordas.android.stockhawk.service.ACTION_INVALID_SYMBOL";
+          "com.ratanachai.android.stockhawk.service.ACTION_INVALID_SYMBOL";
 
   public StockTaskService(){}
 

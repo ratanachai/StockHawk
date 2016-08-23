@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.ui;
+package com.ratanachai.android.stockhawk.ui;
 
 
 import android.content.BroadcastReceiver;
@@ -13,10 +13,10 @@ import android.widget.TextView;
 
 import com.db.chart.model.LineSet;
 import com.db.chart.view.LineChartView;
-import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.rest.Utils;
-import com.sam_chordas.android.stockhawk.service.StockIntentService;
-import com.sam_chordas.android.stockhawk.service.StockTaskService;
+import com.ratanachai.android.stockhawk.R;
+import com.ratanachai.android.stockhawk.rest.Utils;
+import com.ratanachai.android.stockhawk.service.StockIntentService;
+import com.ratanachai.android.stockhawk.service.StockTaskService;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class StockDetailActivity extends BaseActivity {
-    public static final String GET_STOCK_DETAIL_ACTION = "com.sam_chordas.android.stockhawk.ui.GET_STOCK_DETAIL";
+    public static final String GET_STOCK_DETAIL_ACTION = "com.ratanachai.android.stockhawk.ui.GET_STOCK_DETAIL";
     private String[] mDate;
     private Float[] mAdjClose;
     private String mFromDate, mToDate;

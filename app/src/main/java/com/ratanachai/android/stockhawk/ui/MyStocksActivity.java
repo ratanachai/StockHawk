@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.ui;
+package com.ratanachai.android.stockhawk.ui;
 
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -28,15 +28,15 @@ import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
-import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.data.QuoteColumns;
-import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.rest.QuoteCursorAdapter;
-import com.sam_chordas.android.stockhawk.rest.RecyclerViewItemClickListener;
-import com.sam_chordas.android.stockhawk.rest.Utils;
-import com.sam_chordas.android.stockhawk.service.StockIntentService;
-import com.sam_chordas.android.stockhawk.service.StockTaskService;
-import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
+import com.ratanachai.android.stockhawk.R;
+import com.ratanachai.android.stockhawk.data.QuoteColumns;
+import com.ratanachai.android.stockhawk.data.QuoteProvider;
+import com.ratanachai.android.stockhawk.rest.QuoteCursorAdapter;
+import com.ratanachai.android.stockhawk.rest.RecyclerViewItemClickListener;
+import com.ratanachai.android.stockhawk.rest.Utils;
+import com.ratanachai.android.stockhawk.service.StockIntentService;
+import com.ratanachai.android.stockhawk.service.StockTaskService;
+import com.ratanachai.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
 public class MyStocksActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -70,7 +70,7 @@ public class MyStocksActivity extends BaseActivity implements LoaderManager.Load
     if (savedInstanceState == null) {
 
       // 1. "init" is to Fetch pre-defined stocks only if it is the first run
-      SharedPreferences prefs = getSharedPreferences("com.sam_chordas.android.stockhawk", MODE_PRIVATE);
+      SharedPreferences prefs = getSharedPreferences("com.ratanachai.android.stockhawk", MODE_PRIVATE);
       if (prefs.getBoolean("init", true)) {
         prefs.edit().putBoolean("init", false).apply();
         mServiceIntent.putExtra("tag", "init");

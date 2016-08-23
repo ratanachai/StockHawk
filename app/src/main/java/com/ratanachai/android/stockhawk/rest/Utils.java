@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.rest;
+package com.ratanachai.android.stockhawk.rest;
 
 import android.app.Activity;
 import android.content.ContentProviderOperation;
@@ -8,9 +8,9 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.data.QuoteColumns;
-import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.ratanachai.android.stockhawk.R;
+import com.ratanachai.android.stockhawk.data.QuoteColumns;
+import com.ratanachai.android.stockhawk.data.QuoteProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;

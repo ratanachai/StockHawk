@@ -1,10 +1,10 @@
-package com.sam_chordas.android.stockhawk.ui;
+package com.ratanachai.android.stockhawk.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.sam_chordas.android.stockhawk.R;
+import com.ratanachai.android.stockhawk.R;
 
 /**
  * Created by keng on 28/06/16.
